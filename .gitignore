@@ -1,43 +1,10 @@
-# ===== 依赖 =====
-node_modules/
-.pnp/
-.yarn/
-
-# ===== 构建产物 / 中间文件 =====
-**/build/
-**/.gradle/
-*.apk
-*.aab
-*.log
-build_apk*.log
-
-# ===== Android SDK / Gradle 离线包 =====
-android-sdk/
-gradle-*.zip
-
-# ===== 环境变量 / 本地配置 =====
 .env
 .env.*
-local.properties
-
-# ===== 集群端敏感文件 / Python 产物 =====
-# 用户名脱敏映射表：一旦入库，"缩写 → 真实姓名"对应关系即公开，脱敏失效
-slurm_name_map.json
-__pycache__/
-*.pyc
-
-# ===== IDE =====
-.idea/
-*.iml
-.vscode/
-
-# ===== 工具状态（非项目源码） =====
-.workbuddy/
-
-# ===== 嵌套的独立 Git 仓库（已在 GitHub 公开，单独管理，避免 gitlink 冲突） =====
-phy-hpc-web/
-phy-hpc-web-full/
-
-# ===== OS / 杂项 =====
-.DS_Store
-Thumbs.db
+*.log
+*.out
+*.err
+*.key
+*.pem
+credentials*
+secrets*
+.github-token
