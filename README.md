@@ -1,47 +1,54 @@
-# 物电 HPC 集群监控 — 私有开发工作区
+# HPC Task Status
 
-> 私有仓库，仅开发者本人可见。汇集「物电 HPC 集群监控」项目的安卓 App 源码、集群侧数据采集脚本与交付文档。
-> 前端看板本体（GitHub Pages 静态站）在独立公开仓库 [`Leejero/phy-hpc-web`](https://github.com/Leejero/phy-hpc-web)，不包含在本仓库中。
+独立的脱敏计算子任务状态数据仓库，供个人安卓监控 App 读取。
 
-## 项目概览
+本仓库与现有集群监控网页相互独立，不向该网页提供数据。
 
-- **看板网页**：GitHub Pages 静态面板，展示 Slurm 集群的节点、队列、任务与在线用户状态。
-- **安卓 App**（`phy-hpc-web-app/`）：Capacitor 8 WebView 外壳，App 内直接渲染看板；多数据源容错取数（jsDelivr → raw.githubusercontent → github.io → 本地快照），断网时优先使用 `localStorage` 中最近一次联网数据。
-- **数据链路**：集群侧 cron 定时执行采集脚本 → 脱敏 → 经 GitHub Contents API 推送 `data/slurm.json` 至公开仓库（日间约 20 分钟/次，夜间约 2 小时/次）。
+## 数据文件
 
-## 目录结构
+App 只读取 `data/status.json`，其固定结构如下：
 
-| 路径 | 说明 |
-|------|------|
-| `phy-hpc-web-app/` | 安卓 App 工程（Capacitor 8）：`www/` 为 Web 资源源码，`build_debug.sh` 为标准构建入口 |
-| `server/` | 集群侧脚本：`data_collector.py`（Slurm 数据采集）、`sync.sh`（脱敏并推送 GitHub）、`setup_cron.sh`（安装定时任务） |
-| `slurm_name_map.json` | 用户名脱敏映射表 |
-| `物电HPC集群监控-用户手册.{md,pdf}` | 面向使用者的安装与使用手册 |
-| `物电HPC集群监控-群公告.{md,png}` | 群内发布公告（最新版） |
-| `HPC集群监控-*` | 旧命名版本的公告与手册（历史存档） |
-| `phy-hpc-web-代码审查报告.md` 等 | 看板前端的代码审查 / 界面优化 / 整改文档 |
-| `脱敏部署说明.md` | 采集端脱敏与部署说明 |
-
-## 安卓 App 构建
-
-```bash
-cd phy-hpc-web-app
-bash build_debug.sh
+```json
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-05T14:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "collector_status": "ok",
+  "tasks": [
+    {
+      "id": "subtask-001",
+      "name": "子任务 001",
+      "group": "任务组 A",
+      "status": "success",
+      "exit_code": "0:0",
+      "finished_at": "2026-11-05T13:42:00+08:00"
+    }
+  ]
+}
 ```
 
-脚本三步合一：① 用本地全量仓库最新 `slurm.json` 刷新编译期快照；② 同步 `www/` → `android/app/src/main/assets/public/`；③ Gradle 前台编译 `assembleDebug`。
-产物：`android/app/build/outputs/apk/debug/app-debug.apk`（发布时重命名为 `物电HPC集群监控.apk`）。
+状态字段仅使用以下值：
 
-环境要求：JDK 21（Android Studio 自带 jbr）、Android SDK compileSdk 36、Gradle 8.14.3（wrapper 已指向本地离线 zip）。
+| 值 | 含义 |
+| --- | --- |
+| `success` | 子任务成功 |
+| `failed` | 子任务失败 |
+| `running` | 子任务运行中 |
+| `pending` | 子任务等待中 |
+| `unknown` | 状态无法确定 |
 
-> 注意：不要绕过 `build_debug.sh` 直接裸跑 `gradlew`，否则编译期离线快照不会刷新。
+`collector_status` 为 `pending` 表示尚未收到首次真实采集，`ok` 表示采集成功，`error` 表示采集异常。
 
-## 集群侧部署
+## 脱敏约束
 
-1. 将 `server/` 上传至集群登录节点；
-2. `bash setup_cron.sh` 安装定时任务；
-3. 需要立即推送一次数据时执行 `bash sync.sh`。
+- 不上传真实服务器名称、用户名、IP 地址或文件路径。
+- 不上传计算输入文件、输出文件、日志、命令行或科研数据。
+- 任务名称使用别名或编号；如需分组，仅使用不含研究内容的组名。
+- GitHub 凭据仅保存在服务器本地，不进入本仓库或安卓 App。
+- 本仓库为公开仓库，新增字段前必须确认其可以公开。
 
-## 忽略项说明
+## 推送计划
 
-`.gitignore` 已排除：`node_modules/`、本地 Android SDK、Gradle 离线包、构建产物（`build/`、`.gradle/`）、IDE 配置，以及两个嵌套的独立公开仓库 `phy-hpc-web/`、`phy-hpc-web-full/`（它们各自在 GitHub 上维护）。
+采集端计划按北京时间每天 08:00、10:00、12:00、14:00、16:00、18:00、20:00 更新，共 7 次。
+
+当前仅建立仓库与数据格式；采集脚本、定时任务和安卓 App 尚未部署。
