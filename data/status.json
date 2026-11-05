@@ -1,7 +1,3554 @@
 {
   "schema_version": 1,
-  "updated_at": null,
+  "updated_at": "2026-11-05T15:17:50+08:00",
   "timezone": "Asia/Shanghai",
-  "collector_status": "pending",
-  "tasks": []
+  "collector_status": "ok",
+  "job_active": true,
+  "counts": {
+    "success": 14,
+    "warning": 6,
+    "failed": 0,
+    "running": 1,
+    "pending": 421,
+    "unknown": 0
+  },
+  "total": 442,
+  "tasks": [
+    {
+      "id": "G01-P0001",
+      "name": "位置 01 · 距离 12",
+      "group": "任务组 A",
+      "status": "running",
+      "phase": "scf",
+      "detail": "静态电子自洽计算进行中"
+    },
+    {
+      "id": "G01-P0002",
+      "name": "位置 01 · 距离 11",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0003",
+      "name": "位置 01 · 距离 10",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0004",
+      "name": "位置 01 · 距离 09",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0005",
+      "name": "位置 01 · 距离 08",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0006",
+      "name": "位置 01 · 距离 07",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0007",
+      "name": "位置 01 · 距离 06",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0008",
+      "name": "位置 01 · 距离 05",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0009",
+      "name": "位置 01 · 距离 04",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0010",
+      "name": "位置 01 · 距离 03",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0011",
+      "name": "位置 01 · 距离 02",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0012",
+      "name": "位置 01 · 距离 01",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0013",
+      "name": "位置 01 · 距离 13",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0014",
+      "name": "位置 01 · 距离 14",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0015",
+      "name": "位置 01 · 距离 15",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0016",
+      "name": "位置 01 · 距离 16",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0017",
+      "name": "位置 01 · 距离 17",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0018",
+      "name": "位置 02 · 距离 12",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0019",
+      "name": "位置 02 · 距离 11",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0020",
+      "name": "位置 02 · 距离 10",
+      "group": "任务组 A",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "上次弛豫正常结束但未达到离子收敛"
+    },
+    {
+      "id": "G01-P0021",
+      "name": "位置 02 · 距离 09",
+      "group": "任务组 A",
+      "status": "success",
+      "phase": "scf",
+      "detail": "弛豫、电子自洽与能量记录均通过"
+    },
+    {
+      "id": "G01-P0022",
+      "name": "位置 02 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0023",
+      "name": "位置 02 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0024",
+      "name": "位置 02 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0025",
+      "name": "位置 02 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0026",
+      "name": "位置 02 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0027",
+      "name": "位置 02 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0028",
+      "name": "位置 02 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0029",
+      "name": "位置 02 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0030",
+      "name": "位置 02 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0031",
+      "name": "位置 02 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0032",
+      "name": "位置 02 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0033",
+      "name": "位置 02 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0034",
+      "name": "位置 02 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0035",
+      "name": "位置 03 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0036",
+      "name": "位置 03 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0037",
+      "name": "位置 03 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0038",
+      "name": "位置 03 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0039",
+      "name": "位置 03 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0040",
+      "name": "位置 03 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0041",
+      "name": "位置 03 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0042",
+      "name": "位置 03 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0043",
+      "name": "位置 03 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0044",
+      "name": "位置 03 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0045",
+      "name": "位置 03 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0046",
+      "name": "位置 03 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0047",
+      "name": "位置 03 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0048",
+      "name": "位置 03 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0049",
+      "name": "位置 03 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0050",
+      "name": "位置 03 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0051",
+      "name": "位置 03 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0052",
+      "name": "位置 04 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0053",
+      "name": "位置 04 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0054",
+      "name": "位置 04 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0055",
+      "name": "位置 04 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0056",
+      "name": "位置 04 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0057",
+      "name": "位置 04 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0058",
+      "name": "位置 04 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0059",
+      "name": "位置 04 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0060",
+      "name": "位置 04 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0061",
+      "name": "位置 04 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0062",
+      "name": "位置 04 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0063",
+      "name": "位置 04 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0064",
+      "name": "位置 04 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0065",
+      "name": "位置 04 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0066",
+      "name": "位置 04 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0067",
+      "name": "位置 04 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0068",
+      "name": "位置 04 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0069",
+      "name": "位置 05 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0070",
+      "name": "位置 05 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0071",
+      "name": "位置 05 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0072",
+      "name": "位置 05 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0073",
+      "name": "位置 05 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0074",
+      "name": "位置 05 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0075",
+      "name": "位置 05 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0076",
+      "name": "位置 05 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0077",
+      "name": "位置 05 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0078",
+      "name": "位置 05 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0079",
+      "name": "位置 05 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0080",
+      "name": "位置 05 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0081",
+      "name": "位置 05 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0082",
+      "name": "位置 05 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0083",
+      "name": "位置 05 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0084",
+      "name": "位置 05 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0085",
+      "name": "位置 05 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0086",
+      "name": "位置 06 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0087",
+      "name": "位置 06 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0088",
+      "name": "位置 06 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0089",
+      "name": "位置 06 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0090",
+      "name": "位置 06 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0091",
+      "name": "位置 06 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0092",
+      "name": "位置 06 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0093",
+      "name": "位置 06 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0094",
+      "name": "位置 06 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0095",
+      "name": "位置 06 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0096",
+      "name": "位置 06 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0097",
+      "name": "位置 06 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0098",
+      "name": "位置 06 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0099",
+      "name": "位置 06 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0100",
+      "name": "位置 06 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0101",
+      "name": "位置 06 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0102",
+      "name": "位置 06 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0103",
+      "name": "位置 07 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0104",
+      "name": "位置 07 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0105",
+      "name": "位置 07 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0106",
+      "name": "位置 07 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0107",
+      "name": "位置 07 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0108",
+      "name": "位置 07 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0109",
+      "name": "位置 07 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0110",
+      "name": "位置 07 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0111",
+      "name": "位置 07 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0112",
+      "name": "位置 07 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0113",
+      "name": "位置 07 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0114",
+      "name": "位置 07 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0115",
+      "name": "位置 07 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0116",
+      "name": "位置 07 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0117",
+      "name": "位置 07 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0118",
+      "name": "位置 07 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0119",
+      "name": "位置 07 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0120",
+      "name": "位置 08 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0121",
+      "name": "位置 08 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0122",
+      "name": "位置 08 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0123",
+      "name": "位置 08 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0124",
+      "name": "位置 08 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0125",
+      "name": "位置 08 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0126",
+      "name": "位置 08 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0127",
+      "name": "位置 08 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0128",
+      "name": "位置 08 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0129",
+      "name": "位置 08 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0130",
+      "name": "位置 08 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0131",
+      "name": "位置 08 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0132",
+      "name": "位置 08 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0133",
+      "name": "位置 08 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0134",
+      "name": "位置 08 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0135",
+      "name": "位置 08 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0136",
+      "name": "位置 08 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0137",
+      "name": "位置 09 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0138",
+      "name": "位置 09 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0139",
+      "name": "位置 09 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0140",
+      "name": "位置 09 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0141",
+      "name": "位置 09 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0142",
+      "name": "位置 09 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0143",
+      "name": "位置 09 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0144",
+      "name": "位置 09 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0145",
+      "name": "位置 09 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0146",
+      "name": "位置 09 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0147",
+      "name": "位置 09 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0148",
+      "name": "位置 09 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0149",
+      "name": "位置 09 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0150",
+      "name": "位置 09 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0151",
+      "name": "位置 09 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0152",
+      "name": "位置 09 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0153",
+      "name": "位置 09 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0154",
+      "name": "位置 10 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0155",
+      "name": "位置 10 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0156",
+      "name": "位置 10 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0157",
+      "name": "位置 10 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0158",
+      "name": "位置 10 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0159",
+      "name": "位置 10 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0160",
+      "name": "位置 10 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0161",
+      "name": "位置 10 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0162",
+      "name": "位置 10 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0163",
+      "name": "位置 10 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0164",
+      "name": "位置 10 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0165",
+      "name": "位置 10 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0166",
+      "name": "位置 10 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0167",
+      "name": "位置 10 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0168",
+      "name": "位置 10 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0169",
+      "name": "位置 10 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0170",
+      "name": "位置 10 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0171",
+      "name": "位置 11 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0172",
+      "name": "位置 11 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0173",
+      "name": "位置 11 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0174",
+      "name": "位置 11 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0175",
+      "name": "位置 11 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0176",
+      "name": "位置 11 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0177",
+      "name": "位置 11 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0178",
+      "name": "位置 11 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0179",
+      "name": "位置 11 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0180",
+      "name": "位置 11 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0181",
+      "name": "位置 11 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0182",
+      "name": "位置 11 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0183",
+      "name": "位置 11 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0184",
+      "name": "位置 11 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0185",
+      "name": "位置 11 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0186",
+      "name": "位置 11 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0187",
+      "name": "位置 11 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0188",
+      "name": "位置 12 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0189",
+      "name": "位置 12 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0190",
+      "name": "位置 12 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0191",
+      "name": "位置 12 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0192",
+      "name": "位置 12 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0193",
+      "name": "位置 12 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0194",
+      "name": "位置 12 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0195",
+      "name": "位置 12 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0196",
+      "name": "位置 12 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0197",
+      "name": "位置 12 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0198",
+      "name": "位置 12 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0199",
+      "name": "位置 12 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0200",
+      "name": "位置 12 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0201",
+      "name": "位置 12 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0202",
+      "name": "位置 12 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0203",
+      "name": "位置 12 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0204",
+      "name": "位置 12 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0205",
+      "name": "位置 13 · 距离 12",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0206",
+      "name": "位置 13 · 距离 11",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0207",
+      "name": "位置 13 · 距离 10",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0208",
+      "name": "位置 13 · 距离 09",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0209",
+      "name": "位置 13 · 距离 08",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0210",
+      "name": "位置 13 · 距离 07",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0211",
+      "name": "位置 13 · 距离 06",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0212",
+      "name": "位置 13 · 距离 05",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0213",
+      "name": "位置 13 · 距离 04",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0214",
+      "name": "位置 13 · 距离 03",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0215",
+      "name": "位置 13 · 距离 02",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0216",
+      "name": "位置 13 · 距离 01",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0217",
+      "name": "位置 13 · 距离 13",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0218",
+      "name": "位置 13 · 距离 14",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0219",
+      "name": "位置 13 · 距离 15",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0220",
+      "name": "位置 13 · 距离 16",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G01-P0221",
+      "name": "位置 13 · 距离 17",
+      "group": "任务组 A",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0222",
+      "name": "位置 01 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0223",
+      "name": "位置 01 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0224",
+      "name": "位置 01 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0225",
+      "name": "位置 01 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0226",
+      "name": "位置 01 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0227",
+      "name": "位置 01 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0228",
+      "name": "位置 01 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0229",
+      "name": "位置 01 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0230",
+      "name": "位置 01 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0231",
+      "name": "位置 01 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0232",
+      "name": "位置 01 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0233",
+      "name": "位置 01 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0234",
+      "name": "位置 01 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0235",
+      "name": "位置 01 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0236",
+      "name": "位置 01 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0237",
+      "name": "位置 01 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0238",
+      "name": "位置 01 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0239",
+      "name": "位置 02 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0240",
+      "name": "位置 02 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0241",
+      "name": "位置 02 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0242",
+      "name": "位置 02 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0243",
+      "name": "位置 02 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0244",
+      "name": "位置 02 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0245",
+      "name": "位置 02 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0246",
+      "name": "位置 02 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0247",
+      "name": "位置 02 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0248",
+      "name": "位置 02 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0249",
+      "name": "位置 02 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0250",
+      "name": "位置 02 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0251",
+      "name": "位置 02 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0252",
+      "name": "位置 02 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0253",
+      "name": "位置 02 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0254",
+      "name": "位置 02 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0255",
+      "name": "位置 02 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0256",
+      "name": "位置 03 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0257",
+      "name": "位置 03 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0258",
+      "name": "位置 03 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0259",
+      "name": "位置 03 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0260",
+      "name": "位置 03 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0261",
+      "name": "位置 03 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0262",
+      "name": "位置 03 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0263",
+      "name": "位置 03 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0264",
+      "name": "位置 03 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0265",
+      "name": "位置 03 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0266",
+      "name": "位置 03 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0267",
+      "name": "位置 03 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0268",
+      "name": "位置 03 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0269",
+      "name": "位置 03 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0270",
+      "name": "位置 03 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0271",
+      "name": "位置 03 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0272",
+      "name": "位置 03 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0273",
+      "name": "位置 04 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0274",
+      "name": "位置 04 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0275",
+      "name": "位置 04 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0276",
+      "name": "位置 04 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0277",
+      "name": "位置 04 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0278",
+      "name": "位置 04 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0279",
+      "name": "位置 04 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0280",
+      "name": "位置 04 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0281",
+      "name": "位置 04 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0282",
+      "name": "位置 04 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0283",
+      "name": "位置 04 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0284",
+      "name": "位置 04 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0285",
+      "name": "位置 04 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0286",
+      "name": "位置 04 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0287",
+      "name": "位置 04 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0288",
+      "name": "位置 04 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0289",
+      "name": "位置 04 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0290",
+      "name": "位置 05 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0291",
+      "name": "位置 05 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0292",
+      "name": "位置 05 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0293",
+      "name": "位置 05 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0294",
+      "name": "位置 05 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0295",
+      "name": "位置 05 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0296",
+      "name": "位置 05 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0297",
+      "name": "位置 05 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0298",
+      "name": "位置 05 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0299",
+      "name": "位置 05 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0300",
+      "name": "位置 05 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0301",
+      "name": "位置 05 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0302",
+      "name": "位置 05 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0303",
+      "name": "位置 05 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0304",
+      "name": "位置 05 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0305",
+      "name": "位置 05 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0306",
+      "name": "位置 05 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0307",
+      "name": "位置 06 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0308",
+      "name": "位置 06 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0309",
+      "name": "位置 06 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0310",
+      "name": "位置 06 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0311",
+      "name": "位置 06 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0312",
+      "name": "位置 06 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0313",
+      "name": "位置 06 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0314",
+      "name": "位置 06 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0315",
+      "name": "位置 06 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0316",
+      "name": "位置 06 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0317",
+      "name": "位置 06 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0318",
+      "name": "位置 06 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0319",
+      "name": "位置 06 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0320",
+      "name": "位置 06 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0321",
+      "name": "位置 06 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0322",
+      "name": "位置 06 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0323",
+      "name": "位置 06 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0324",
+      "name": "位置 07 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0325",
+      "name": "位置 07 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0326",
+      "name": "位置 07 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0327",
+      "name": "位置 07 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0328",
+      "name": "位置 07 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0329",
+      "name": "位置 07 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0330",
+      "name": "位置 07 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0331",
+      "name": "位置 07 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0332",
+      "name": "位置 07 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0333",
+      "name": "位置 07 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0334",
+      "name": "位置 07 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0335",
+      "name": "位置 07 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0336",
+      "name": "位置 07 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0337",
+      "name": "位置 07 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0338",
+      "name": "位置 07 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0339",
+      "name": "位置 07 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0340",
+      "name": "位置 07 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0341",
+      "name": "位置 08 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0342",
+      "name": "位置 08 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0343",
+      "name": "位置 08 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0344",
+      "name": "位置 08 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0345",
+      "name": "位置 08 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0346",
+      "name": "位置 08 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0347",
+      "name": "位置 08 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0348",
+      "name": "位置 08 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0349",
+      "name": "位置 08 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0350",
+      "name": "位置 08 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0351",
+      "name": "位置 08 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0352",
+      "name": "位置 08 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0353",
+      "name": "位置 08 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0354",
+      "name": "位置 08 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0355",
+      "name": "位置 08 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0356",
+      "name": "位置 08 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0357",
+      "name": "位置 08 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0358",
+      "name": "位置 09 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0359",
+      "name": "位置 09 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0360",
+      "name": "位置 09 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0361",
+      "name": "位置 09 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0362",
+      "name": "位置 09 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0363",
+      "name": "位置 09 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0364",
+      "name": "位置 09 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0365",
+      "name": "位置 09 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0366",
+      "name": "位置 09 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0367",
+      "name": "位置 09 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0368",
+      "name": "位置 09 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0369",
+      "name": "位置 09 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0370",
+      "name": "位置 09 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0371",
+      "name": "位置 09 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0372",
+      "name": "位置 09 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0373",
+      "name": "位置 09 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0374",
+      "name": "位置 09 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0375",
+      "name": "位置 10 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0376",
+      "name": "位置 10 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0377",
+      "name": "位置 10 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0378",
+      "name": "位置 10 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0379",
+      "name": "位置 10 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0380",
+      "name": "位置 10 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0381",
+      "name": "位置 10 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0382",
+      "name": "位置 10 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0383",
+      "name": "位置 10 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0384",
+      "name": "位置 10 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0385",
+      "name": "位置 10 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0386",
+      "name": "位置 10 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0387",
+      "name": "位置 10 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0388",
+      "name": "位置 10 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0389",
+      "name": "位置 10 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0390",
+      "name": "位置 10 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0391",
+      "name": "位置 10 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0392",
+      "name": "位置 11 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0393",
+      "name": "位置 11 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0394",
+      "name": "位置 11 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0395",
+      "name": "位置 11 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0396",
+      "name": "位置 11 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0397",
+      "name": "位置 11 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0398",
+      "name": "位置 11 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0399",
+      "name": "位置 11 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0400",
+      "name": "位置 11 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0401",
+      "name": "位置 11 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0402",
+      "name": "位置 11 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0403",
+      "name": "位置 11 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0404",
+      "name": "位置 11 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0405",
+      "name": "位置 11 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0406",
+      "name": "位置 11 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0407",
+      "name": "位置 11 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0408",
+      "name": "位置 11 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0409",
+      "name": "位置 12 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0410",
+      "name": "位置 12 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0411",
+      "name": "位置 12 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0412",
+      "name": "位置 12 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0413",
+      "name": "位置 12 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0414",
+      "name": "位置 12 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0415",
+      "name": "位置 12 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0416",
+      "name": "位置 12 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0417",
+      "name": "位置 12 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0418",
+      "name": "位置 12 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0419",
+      "name": "位置 12 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0420",
+      "name": "位置 12 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0421",
+      "name": "位置 12 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0422",
+      "name": "位置 12 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0423",
+      "name": "位置 12 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0424",
+      "name": "位置 12 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0425",
+      "name": "位置 12 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0426",
+      "name": "位置 13 · 距离 12",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0427",
+      "name": "位置 13 · 距离 11",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0428",
+      "name": "位置 13 · 距离 10",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0429",
+      "name": "位置 13 · 距离 09",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0430",
+      "name": "位置 13 · 距离 08",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0431",
+      "name": "位置 13 · 距离 07",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0432",
+      "name": "位置 13 · 距离 06",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0433",
+      "name": "位置 13 · 距离 05",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0434",
+      "name": "位置 13 · 距离 04",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0435",
+      "name": "位置 13 · 距离 03",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0436",
+      "name": "位置 13 · 距离 02",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0437",
+      "name": "位置 13 · 距离 01",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0438",
+      "name": "位置 13 · 距离 13",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0439",
+      "name": "位置 13 · 距离 14",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0440",
+      "name": "位置 13 · 距离 15",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0441",
+      "name": "位置 13 · 距离 16",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    },
+    {
+      "id": "G02-P0442",
+      "name": "位置 13 · 距离 17",
+      "group": "任务组 B",
+      "status": "pending",
+      "phase": "relax",
+      "detail": "已准备，等待开始"
+    }
+  ]
 }
