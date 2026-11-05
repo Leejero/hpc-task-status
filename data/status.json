@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-05T16:00:06+08:00",
+  "updated_at": "2026-11-05T16:07:44+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
@@ -9,10 +9,19 @@
     "success": 14,
     "warning": 6,
     "failed": 0,
-    "running": 0,
+    "running": 1,
     "pending": 421,
-    "unknown": 1
+    "unknown": 0
   },
+  "running_tasks": [
+    {
+      "name": "slide-000/2.00",
+      "group": "2H",
+      "status": "running",
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
+    }
+  ],
   "issues": [
     {
       "name": "slide-001/1.95",
@@ -53,14 +62,6 @@
       "phase": "relax",
       "detail": "正常退出但未收敛",
       "time": "2026-11-04T21:29:19+08:00"
-    },
-    {
-      "name": "slide-000/2.00",
-      "group": "2H",
-      "status": "unknown",
-      "phase": "scf",
-      "detail": "计算证据不完整",
-      "time": "2026-11-04T18:35:24+08:00"
     },
     {
       "name": "slide-000/2.60",
