@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-06T08:00:05+08:00",
+  "updated_at": "2026-11-06T10:00:05+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 442,
   "counts": {
-    "success": 14,
-    "warning": 6,
+    "success": 15,
+    "warning": 5,
     "failed": 0,
     "running": 1,
     "pending": 421,
@@ -15,11 +15,11 @@
   },
   "running_tasks": [
     {
-      "name": "slide-000/2.40",
+      "name": "slide-000/2.60",
       "group": "2H",
       "status": "running",
-      "phase": "scf",
-      "detail": "静态计算进行中"
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
     }
   ],
   "issues": [
@@ -62,17 +62,17 @@
       "phase": "relax",
       "detail": "正常退出但未收敛",
       "time": "2026-11-04T21:29:19+08:00"
-    },
-    {
-      "name": "slide-000/2.60",
-      "group": "2H",
-      "status": "warning",
-      "phase": "relax",
-      "detail": "正常退出但未收敛",
-      "time": "2026-11-04T17:53:28+08:00"
     }
   ],
   "recent_success": [
+    {
+      "name": "slide-000/2.40",
+      "group": "2H",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-06T08:17:35+08:00"
+    },
     {
       "name": "slide-000/2.20",
       "group": "2H",
@@ -104,14 +104,6 @@
       "phase": "scf",
       "detail": "计算成功",
       "time": "2026-11-06T02:13:21+08:00"
-    },
-    {
-      "name": "slide-000/1.65",
-      "group": "2H",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-06T00:43:09+08:00"
     }
   ]
 }
