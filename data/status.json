@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-05T20:00:05+08:00",
+  "updated_at": "2026-11-06T08:00:05+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
@@ -15,7 +15,7 @@
   },
   "running_tasks": [
     {
-      "name": "slide-000/1.85",
+      "name": "slide-000/2.40",
       "group": "2H",
       "status": "running",
       "phase": "scf",
@@ -74,44 +74,44 @@
   ],
   "recent_success": [
     {
-      "name": "slide-000/1.90",
+      "name": "slide-000/2.20",
       "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T18:38:38+08:00"
+      "time": "2026-11-06T06:09:23+08:00"
     },
     {
-      "name": "slide-000/1.95",
+      "name": "slide-000/1.50",
       "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T17:41:11+08:00"
+      "time": "2026-11-06T04:31:21+08:00"
     },
     {
-      "name": "slide-000/2.00",
+      "name": "slide-000/1.55",
       "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T16:34:28+08:00"
+      "time": "2026-11-06T03:13:07+08:00"
     },
     {
-      "name": "slide-000/2.10",
+      "name": "slide-000/1.60",
       "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T15:26:44+08:00"
+      "time": "2026-11-06T02:13:21+08:00"
     },
     {
-      "name": "slide-001/1.90",
+      "name": "slide-000/1.65",
       "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T13:06:44+08:00"
+      "time": "2026-11-06T00:43:09+08:00"
     }
   ]
 }
