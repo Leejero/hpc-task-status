@@ -9,6 +9,7 @@ credentials*
 secrets*
 .github-token
 server/github.env
+server/tasks.json
 server/data/
 server/.sync.lock
 server/.cron.lock

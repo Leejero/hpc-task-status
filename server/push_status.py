@@ -1,68 +1,75 @@
 #!/usr/bin/env python3
-"""Validate a sanitized status snapshot and publish it with GitHub Contents API."""
+"""Validate the compact status summary and publish it with GitHub Contents API."""
 import argparse
 import base64
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
 
-TOP_KEYS = {"schema_version", "updated_at", "timezone", "collector_status", "job_active", "counts", "total", "tasks"}
-TASK_KEYS = {"id", "name", "group", "status", "phase", "detail"}
+TOP_KEYS = {"schema_version", "updated_at", "timezone", "collector_status", "job_active", "counts", "total", "scope", "running_tasks", "issues", "recent_success"}
+RECORD_KEYS = {"name", "group", "status", "phase", "detail", "time"}
+RUNNING_KEYS = RECORD_KEYS - {"time"}
 STATES = {"success", "warning", "failed", "running", "pending", "unknown"}
-ALLOWED_DETAILS = {
-    "尚未开始", "已准备，等待开始", "弛豫、电子自洽与能量记录均通过",
-    "检测到计算异常终止", "计算证据不完整，无法确认结果正确",
-    "电子自洽已收敛，但能量记录缺失或无效", "静态电子自洽计算进行中",
-    "弛豫已收敛，静态计算尚未达到电子收敛", "弛豫已收敛，静态计算等待开始",
-    "离子弛豫计算进行中", "上次弛豫正常结束但未达到离子收敛",
-    "存在未完成输出，无法判定当前阶段", "上次计算返回非零退出码",
-    "上次正常退出但未达到收敛标准",
-}
+DETAILS = {"计算成功", "计算异常终止", "计算证据不完整", "能量记录缺失或无效", "静态计算未收敛", "非零退出码", "正常退出但未收敛", "存在未完成输出", "静态计算进行中", "弛豫计算进行中"}
+NAME_RE = re.compile(r"^[^/\s]+/[0-9]+(?:\.[0-9]+)?$")
+SCOPE_RE = re.compile(r"^slide-[0-9]{3,}$")
+
+
+def in_scope(record, scope):
+    return isinstance(record, dict) and isinstance(record.get("name"), str) and record["name"].split("/", 1)[0] in scope
 
 
 def validate(data):
-    if set(data) != TOP_KEYS or data.get("schema_version") != 1:
-        raise ValueError("unexpected top-level schema")
-    if data.get("timezone") != "Asia/Shanghai" or data.get("collector_status") != "ok":
+    if set(data) != TOP_KEYS or data.get("schema_version") != 2:
+        raise ValueError("unexpected compact status schema")
+    if data.get("timezone") != "Asia/Shanghai" or data.get("collector_status") != "ok" or not isinstance(data.get("job_active"), bool):
         raise ValueError("invalid collection metadata")
-    tasks = data.get("tasks")
-    if not isinstance(tasks, list) or not tasks or data.get("total") != len(tasks):
-        raise ValueError("invalid task list")
-    if not isinstance(data.get("job_active"), bool):
-        raise ValueError("invalid job activity flag")
-    for key, value in data.get("counts", {}).items():
-        if key not in STATES or not isinstance(value, int) or value < 0:
-            raise ValueError("invalid counts")
-    if set(data["counts"]) != STATES or sum(data["counts"].values()) != len(tasks):
-        raise ValueError("counts do not match tasks")
-    for task in tasks:
-        if set(task) != TASK_KEYS:
-            raise ValueError("unexpected task fields")
-        if task["status"] not in STATES or task["phase"] not in {"relax", "scf"}:
-            raise ValueError("invalid task state")
-        if task["detail"] not in ALLOWED_DETAILS:
-            raise ValueError("non-allowlisted public detail")
-        if task["group"] not in {"任务组 A", "任务组 B"}:
-            raise ValueError("non-allowlisted public group")
-        if not task["id"].startswith("G") or not task["name"].startswith("位置 "):
-            raise ValueError("non-allowlisted task alias")
+    if not isinstance(data.get("total"), int) or data["total"] < 1:
+        raise ValueError("invalid total")
+    if set(data.get("counts", {})) != STATES or sum(data["counts"].values()) != data["total"]:
+        raise ValueError("counts do not match total")
+    if any(not isinstance(value, int) or value < 0 for value in data["counts"].values()):
+        raise ValueError("invalid counts")
+    if any(not isinstance(data.get(key), list) for key in ("scope", "issues", "recent_success", "running_tasks")):
+        raise ValueError("invalid compact record lists")
+    if not 1 <= len(data["scope"]) <= 10 or any(not isinstance(slide, str) or not SCOPE_RE.fullmatch(slide) for slide in data["scope"]):
+        raise ValueError("invalid current slide scope")
+    if len(data["issues"]) > 30 or len(data["recent_success"]) > 5:
+        raise ValueError("compact record limit exceeded")
+    if len(data["running_tasks"]) != data["counts"]["running"]:
+        raise ValueError("running records do not match count")
+    for record in data["running_tasks"]:
+        if not in_scope(record, data["scope"]):
+            raise ValueError("running task is outside current slide scope")
+        if set(record) != RUNNING_KEYS or not NAME_RE.fullmatch(record["name"]):
+            raise ValueError("invalid running task fields")
+        if record["status"] != "running" or record["phase"] not in {"relax", "scf"} or record["detail"] not in DETAILS:
+            raise ValueError("invalid running task state")
+        if not isinstance(record["group"], str) or len(record["group"]) > 20:
+            raise ValueError("invalid running task group")
+    for record in data["issues"] + data["recent_success"]:
+        if not in_scope(record, data["scope"]):
+            raise ValueError("completed record is outside current slide scope")
+        if set(record) != RECORD_KEYS or not NAME_RE.fullmatch(record["name"]):
+            raise ValueError("invalid compact task name or fields")
+        if record["status"] not in {"success", "warning", "failed", "unknown"}:
+            raise ValueError("only completed records may be published")
+        if record["phase"] not in {"relax", "scf"} or record["detail"] not in DETAILS:
+            raise ValueError("invalid record detail")
+        if not isinstance(record["group"], str) or len(record["group"]) > 20 or not isinstance(record["time"], str) or len(record["time"]) > 30:
+            raise ValueError("invalid record group or time")
 
 
 def request(url, token, method="GET", payload=None):
     body = None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    headers = {
-        "Authorization": "Bearer " + token,
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "personal-task-status-collector",
-    }
+    headers = {"Authorization": "Bearer " + token, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "personal-task-status-collector"}
     if body is not None:
         headers["Content-Type"] = "application/json"
-    req = urllib.request.Request(url, data=body, headers=headers, method=method)
-    with urllib.request.urlopen(req, timeout=45) as response:
+    with urllib.request.urlopen(urllib.request.Request(url, data=body, headers=headers, method=method), timeout=45) as response:
         return json.load(response)
 
 
@@ -74,39 +81,27 @@ def main():
     raw = args.status.read_bytes()
     data = json.loads(raw.decode("utf-8"))
     validate(data)
-    print("Public-data validation passed: {} neutral task records.".format(len(data["tasks"])))
+    print("Compact public data passed: {} bytes, {} issues, {} recent successes.".format(len(raw), len(data["issues"]), len(data["recent_success"])))
     if args.dry_run:
         return 0
-
     token = os.environ.get("GITHUB_TOKEN", "").strip()
     if not token:
-        print("GITHUB_TOKEN is not configured; local snapshot retained, no upload attempted.", file=sys.stderr)
+        print("GITHUB_TOKEN is not configured; local snapshot retained.", file=sys.stderr)
         return 2
-    owner = os.environ.get("GITHUB_OWNER", "Leejero")
-    repo = os.environ.get("GITHUB_REPO", "hpc-task-status")
-    branch = os.environ.get("GITHUB_BRANCH", "main")
-    if owner != "Leejero" or repo != "hpc-task-status" or branch != "main":
-        raise ValueError("refusing to publish to an unexpected repository")
+    owner, repo, branch = os.environ.get("GITHUB_OWNER", "Leejero"), os.environ.get("GITHUB_REPO", "hpc-task-status"), os.environ.get("GITHUB_BRANCH", "main")
+    if (owner, repo, branch) != ("Leejero", "hpc-task-status", "main"):
+        raise ValueError("unexpected repository")
     endpoint = "https://api.github.com/repos/{}/{}/contents/data/status.json".format(owner, repo)
     current = request(endpoint + "?ref=" + branch, token)
-    old_bytes = base64.b64decode(current["content"])
-    if json.loads(old_bytes.decode("utf-8")) == data:
-        print("Remote snapshot is already identical; no commit needed.")
+    if json.loads(base64.b64decode(current["content"]).decode("utf-8")) == data:
+        print("Remote snapshot is already identical.")
         return 0
-    payload = {
-        "message": "Update sanitized subtask status",
-        "content": base64.b64encode(raw).decode("ascii"),
-        "sha": current["sha"],
-        "branch": branch,
-    }
+    payload = {"message": "Update compact subtask summary", "content": base64.b64encode(raw).decode("ascii"), "sha": current["sha"], "branch": branch}
     result = request(endpoint, token, method="PUT", payload=payload)
-    # The Contents PUT response contains a blob SHA but not necessarily file content.
-    # Fetch the committed file back before declaring a successful publication.
     committed = request(endpoint + "?ref=" + branch, token)
-    remote_bytes = base64.b64decode(committed["content"])
-    if json.loads(remote_bytes.decode("utf-8")) != data:
-        raise RuntimeError("remote content does not match the validated snapshot")
-    print("Published sanitized status; commit " + result["commit"]["sha"][:8] + ".")
+    if json.loads(base64.b64decode(committed["content"]).decode("utf-8")) != data:
+        raise RuntimeError("remote content mismatch")
+    print("Published compact status; commit " + result["commit"]["sha"][:8] + ".")
     return 0
 
 
