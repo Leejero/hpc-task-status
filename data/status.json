@@ -1,16 +1,16 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-18T12:00:04+08:00",
+  "updated_at": "2026-11-18T14:00:04+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 364,
   "counts": {
-    "success": 137,
+    "success": 139,
     "warning": 3,
     "failed": 0,
     "running": 1,
-    "pending": 223,
+    "pending": 221,
     "unknown": 0
   },
   "scope": [
@@ -18,7 +18,7 @@
   ],
   "running_tasks": [
     {
-      "name": "slide-008/1.55",
+      "name": "slide-008/2.20",
       "group": "3C",
       "status": "running",
       "phase": "relax",
@@ -27,6 +27,22 @@
   ],
   "issues": [],
   "recent_success": [
+    {
+      "name": "slide-008/1.50",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-18T13:50:27+08:00"
+    },
+    {
+      "name": "slide-008/1.55",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-18T12:48:46+08:00"
+    },
     {
       "name": "slide-008/1.60",
       "group": "3C",
@@ -50,22 +66,6 @@
       "phase": "scf",
       "detail": "计算成功",
       "time": "2026-11-18T09:47:05+08:00"
-    },
-    {
-      "name": "slide-008/1.75",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-18T08:42:58+08:00"
-    },
-    {
-      "name": "slide-008/1.80",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-18T07:50:12+08:00"
     }
   ]
 }
