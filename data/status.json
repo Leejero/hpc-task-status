@@ -1,24 +1,24 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-19T14:00:04+08:00",
+  "updated_at": "2026-11-19T16:00:05+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 364,
   "counts": {
-    "success": 122,
+    "success": 124,
     "warning": 3,
     "failed": 0,
     "running": 1,
-    "pending": 238,
+    "pending": 236,
     "unknown": 0
   },
   "scope": [
-    "slide-004"
+    "slide-008"
   ],
   "running_tasks": [
     {
-      "name": "slide-004/1.50",
+      "name": "slide-008/2.00",
       "group": "3C",
       "status": "running",
       "phase": "relax",
@@ -28,44 +28,44 @@
   "issues": [],
   "recent_success": [
     {
-      "name": "slide-004/1.55",
+      "name": "slide-008/2.10",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T13:43:55+08:00"
+      "time": "2026-11-19T15:51:57+08:00"
     },
     {
-      "name": "slide-004/1.60",
-      "group": "3C",
+      "name": "slide-008/2.40",
+      "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T12:41:04+08:00"
+      "time": "2026-11-15T11:49:54+08:00"
     },
     {
-      "name": "slide-004/1.65",
-      "group": "3C",
+      "name": "slide-008/2.20",
+      "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T11:39:01+08:00"
+      "time": "2026-11-15T09:36:39+08:00"
     },
     {
-      "name": "slide-004/1.70",
-      "group": "3C",
+      "name": "slide-008/1.50",
+      "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T10:45:33+08:00"
+      "time": "2026-11-15T08:03:16+08:00"
     },
     {
-      "name": "slide-004/1.75",
-      "group": "3C",
+      "name": "slide-008/1.55",
+      "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T09:35:32+08:00"
+      "time": "2026-11-15T06:56:32+08:00"
     }
   ]
 }
