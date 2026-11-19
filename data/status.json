@@ -1,16 +1,16 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-19T18:00:05+08:00",
+  "updated_at": "2026-11-19T20:00:04+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 364,
   "counts": {
-    "success": 126,
+    "success": 129,
     "warning": 3,
     "failed": 0,
     "running": 1,
-    "pending": 234,
+    "pending": 231,
     "unknown": 0
   },
   "scope": [
@@ -18,15 +18,39 @@
   ],
   "running_tasks": [
     {
-      "name": "slide-008/1.90",
+      "name": "slide-008/1.75",
       "group": "3C",
       "status": "running",
-      "phase": "scf",
-      "detail": "静态计算进行中"
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
     }
   ],
   "issues": [],
   "recent_success": [
+    {
+      "name": "slide-008/1.80",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-19T19:58:37+08:00"
+    },
+    {
+      "name": "slide-008/1.85",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-19T19:01:11+08:00"
+    },
+    {
+      "name": "slide-008/1.90",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-19T18:17:13+08:00"
+    },
     {
       "name": "slide-008/1.95",
       "group": "3C",
@@ -42,30 +66,6 @@
       "phase": "scf",
       "detail": "计算成功",
       "time": "2026-11-19T16:46:41+08:00"
-    },
-    {
-      "name": "slide-008/2.10",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-19T15:51:57+08:00"
-    },
-    {
-      "name": "slide-008/2.40",
-      "group": "2H",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-15T11:49:54+08:00"
-    },
-    {
-      "name": "slide-008/2.20",
-      "group": "2H",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-15T09:36:39+08:00"
     }
   ]
 }
