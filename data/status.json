@@ -1,71 +1,71 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-18T20:00:04+08:00",
+  "updated_at": "2026-11-19T08:00:04+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 364,
   "counts": {
-    "success": 104,
+    "success": 116,
     "warning": 3,
     "failed": 0,
     "running": 1,
-    "pending": 256,
+    "pending": 244,
     "unknown": 0
   },
   "scope": [
-    "slide-002"
+    "slide-004"
   ],
   "running_tasks": [
     {
-      "name": "slide-002/1.80",
+      "name": "slide-004/1.80",
       "group": "3C",
       "status": "running",
-      "phase": "relax",
-      "detail": "弛豫计算进行中"
+      "phase": "scf",
+      "detail": "静态计算进行中"
     }
   ],
   "issues": [],
   "recent_success": [
     {
-      "name": "slide-002/1.85",
+      "name": "slide-004/1.85",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-18T19:46:08+08:00"
+      "time": "2026-11-19T07:17:11+08:00"
     },
     {
-      "name": "slide-002/1.90",
+      "name": "slide-004/1.90",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-18T19:03:58+08:00"
+      "time": "2026-11-19T06:23:22+08:00"
     },
     {
-      "name": "slide-002/1.95",
+      "name": "slide-004/1.95",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-18T18:16:15+08:00"
+      "time": "2026-11-19T05:29:18+08:00"
     },
     {
-      "name": "slide-002/2.00",
+      "name": "slide-004/2.00",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-18T17:37:06+08:00"
+      "time": "2026-11-19T04:41:57+08:00"
     },
     {
-      "name": "slide-002/2.10",
+      "name": "slide-004/2.10",
       "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-18T16:49:45+08:00"
+      "time": "2026-11-19T03:38:21+08:00"
     }
   ]
 }
