@@ -1,71 +1,56 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-19T20:00:04+08:00",
+  "updated_at": "2026-11-20T08:00:04+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
-  "job_active": true,
+  "job_active": false,
   "total": 364,
   "counts": {
-    "success": 129,
+    "success": 135,
     "warning": 3,
     "failed": 0,
-    "running": 1,
-    "pending": 231,
+    "running": 0,
+    "pending": 226,
     "unknown": 0
   },
   "scope": [
-    "slide-008"
+    "slide-001"
   ],
-  "running_tasks": [
+  "running_tasks": [],
+  "issues": [
     {
-      "name": "slide-008/1.75",
-      "group": "3C",
-      "status": "running",
+      "name": "slide-001/1.95",
+      "group": "2H",
+      "status": "warning",
       "phase": "relax",
-      "detail": "弛豫计算进行中"
+      "detail": "正常退出但未收敛",
+      "time": "2026-11-05T09:55:28+08:00"
+    },
+    {
+      "name": "slide-001/2.00",
+      "group": "2H",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "正常退出但未收敛",
+      "time": "2026-11-05T06:56:43+08:00"
+    },
+    {
+      "name": "slide-001/2.10",
+      "group": "2H",
+      "status": "warning",
+      "phase": "relax",
+      "detail": "正常退出但未收敛",
+      "time": "2026-11-05T03:59:41+08:00"
     }
   ],
-  "issues": [],
   "recent_success": [
     {
-      "name": "slide-008/1.80",
-      "group": "3C",
+      "name": "slide-001/1.90",
+      "group": "2H",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-19T19:58:37+08:00"
-    },
-    {
-      "name": "slide-008/1.85",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-19T19:01:11+08:00"
-    },
-    {
-      "name": "slide-008/1.90",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-19T18:17:13+08:00"
-    },
-    {
-      "name": "slide-008/1.95",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-19T17:32:46+08:00"
-    },
-    {
-      "name": "slide-008/2.00",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-19T16:46:41+08:00"
+      "time": "2026-11-05T13:06:44+08:00"
     }
   ]
 }
