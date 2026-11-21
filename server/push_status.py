@@ -2,14 +2,20 @@
 """Validate the compact status summary and publish it with GitHub Contents API."""
 import argparse
 import base64
+import datetime as dt
 import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
+RECENT_WINDOW_SECONDS = 24 * 3600
+FUTURE_TOLERANCE_SECONDS = 5 * 60
+MAX_SNAPSHOT_AGE_SECONDS = 6 * 3600
+SHANGHAI = dt.timezone(dt.timedelta(hours=8))
 TOP_KEYS = {"schema_version", "updated_at", "timezone", "collector_status", "job_active", "counts", "total", "scope", "running_tasks", "issues", "recent_success"}
 RECORD_KEYS = {"name", "group", "status", "phase", "detail", "time"}
 RUNNING_KEYS = RECORD_KEYS - {"time"}
@@ -21,6 +27,18 @@ SCOPE_RE = re.compile(r"^slide-[0-9]{3,}$")
 
 def in_scope(record, scope):
     return isinstance(record, dict) and isinstance(record.get("name"), str) and record["name"].split("/", 1)[0] in scope
+
+
+def parse_timestamp(value):
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        moment = dt.datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    if moment.tzinfo is None:
+        moment = moment.replace(tzinfo=SHANGHAI)
+    return moment.timestamp()
 
 
 def validate(data):
@@ -51,11 +69,17 @@ def validate(data):
             raise ValueError("invalid running task state")
         if not isinstance(record["group"], str) or len(record["group"]) > 20:
             raise ValueError("invalid running task group")
+    updated_at = parse_timestamp(data["updated_at"])
+    if updated_at is None or not time.time() - MAX_SNAPSHOT_AGE_SECONDS <= updated_at <= time.time() + FUTURE_TOLERANCE_SECONDS:
+        raise ValueError("snapshot timestamp is stale or invalid")
     for record in data["issues"] + data["recent_success"]:
         if not in_scope(record, data["scope"]):
             raise ValueError("completed record is outside current slide scope")
         if set(record) != RECORD_KEYS or not NAME_RE.fullmatch(record["name"]):
             raise ValueError("invalid compact task name or fields")
+        completed_at = parse_timestamp(record["time"])
+        if completed_at is None or not updated_at - RECENT_WINDOW_SECONDS <= completed_at <= updated_at + FUTURE_TOLERANCE_SECONDS:
+            raise ValueError("completed record is outside the recent activity window")
         if record["status"] not in {"success", "warning", "failed", "unknown"}:
             raise ValueError("only completed records may be published")
         if record["phase"] not in {"relax", "scf"} or record["detail"] not in DETAILS:

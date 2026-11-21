@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Collect VASP states into counts and a current-slide completion summary.
+"""Collect VASP states into counts and a recent-activity completion summary.
 
-Only running tasks and completion records belonging to the active slide are
-published; pending tasks remain counts. Subtask names retain slide/distance
-identifiers. Dates in the clock-only, multi-day run.log are reconstructed from
-its chronological order; output-file mtimes are used only when no log event is
-available.
+Only current running tasks and completion records finished inside the recent
+activity window are published; pending tasks remain counts. Subtask names retain
+slide/distance identifiers. Logs of the current job root (run.log, run_v6.log,
+...) determine the current scope; inherited archive logs are used only to date
+outputs copied from older runs and can never decide the published scope. Dates
+in clock-only multi-day run logs are reconstructed from chronological order.
 """
 import argparse
 import csv
@@ -25,8 +26,12 @@ CLOCK_RE = re.compile(r"^\[(\d{2}:\d{2}:\d{2})\]")
 FATAL_RE = re.compile(r"ERROR:|segmentation|killed|out of memory|BAD TERMINATION|forrtl: error|internal error", re.IGNORECASE)
 SLIDE_RE = re.compile(r"^slide-[0-9]{3,}$")
 FRESH_SECONDS = 45 * 60
+RECENT_WINDOW_SECONDS = 24 * 3600
+FUTURE_TOLERANCE_SECONDS = 5 * 60
 MAX_SUCCESS = 5
 MAX_ISSUES = 30
+MAX_SCOPE = 10
+LOG_GLOB = "run*.log"
 STATE_ORDER = ("success", "warning", "failed", "running", "pending", "unknown")
 
 
@@ -123,10 +128,17 @@ def event_timestamp(event):
         return None
 
 
-def read_events(root):
-    """Reconstruct event dates by walking a clock-only log backwards in time."""
+def run_logs(root):
+    """All current-job run logs, newest first (run.log, run_v6.log, ...)."""
+    if not root or not root.is_dir():
+        return []
+    paths = [path for path in root.glob(LOG_GLOB) if path.is_file()]
+    return sorted(paths, key=lambda path: (path.stat().st_mtime, path.name), reverse=True)
+
+
+def read_log_events(path):
+    """Reconstruct event dates by walking one clock-only log backwards in time."""
     events = {}
-    path = root / "run.log"
     try:
         lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
         anchor = dt.datetime.fromtimestamp(path.stat().st_mtime, SHANGHAI)
@@ -158,22 +170,31 @@ def read_events(root):
     return events
 
 
+def read_events(root):
+    """Overlay all current-job logs, oldest first so newer logs win."""
+    events = {}
+    for path in reversed(run_logs(root)):
+        for key, phases in read_log_events(path).items():
+            events.setdefault(key, {}).update(phases)
+    return events
+
+
 def last_event_slide(root):
-    """Find the most recently updated log's last slide, for idle periods."""
-    if not root:
-        return None
-    path = root / "run.log"
-    result = None
-    try:
-        mtime = path.stat().st_mtime
-        with path.open("r", encoding="utf-8", errors="replace") as handle:
-            for line in handle:
-                match = EVENT_RE.match(line.strip())
-                if match:
-                    result = match.group(3)
-    except OSError:
-        return None
-    return (mtime, result) if result else None
+    """Last slide of the newest current-job log; never uses inherited archives."""
+    for path in run_logs(root):
+        result = None
+        try:
+            mtime = path.stat().st_mtime
+            with path.open("r", encoding="utf-8", errors="replace") as handle:
+                for line in handle:
+                    match = EVENT_RE.match(line.strip())
+                    if match:
+                        result = match.group(3)
+        except OSError:
+            continue
+        if result:
+            return (mtime, result)
+    return None
 
 
 def slides_from_directories(directories):
@@ -313,14 +334,18 @@ def collect(config_path, active=None, history_path=None, active_directories=None
         with (root / "pairs.tsv").open("r", encoding="utf-8-sig", newline="") as handle:
             rows = [row for row in csv.reader(handle, delimiter="\t") if row and not row[0].lstrip().startswith("#")]
         all_slides.update(row[0] for row in rows)
-        candidate = last_event_slide(root) or (last_event_slide(inherit) if inherit else None)
+        candidate = last_event_slide(root)
         if candidate:
             log_candidates.append(candidate)
         events, inherited_events = read_events(root), read_events(inherit) if inherit else {}
         records.extend(evaluate(root, inherit, row, events, inherited_events, active_directories, not process_scan) for row in rows)
-    active_slides = slides_from_directories(active_directories)
-    fallback_slides = {max(log_candidates)[1]} if log_candidates else set()
-    scope = sorted(active_slides or fallback_slides or all_slides)
+    now_ts = dt.datetime.now().timestamp()
+    window_start = now_ts - RECENT_WINDOW_SECONDS
+
+    def is_recent(record):
+        key = record.get("sort_key", 0)
+        return window_start <= key <= now_ts + FUTURE_TOLERANCE_SECONDS
+
     counts = {state: sum(record["status"] == state for record in records) for state in STATE_ORDER}
     previous = previous_summary(history_path) if history_path else {}
     history = {}
@@ -334,9 +359,17 @@ def collect(config_path, active=None, history_path=None, active_directories=None
             history[key] = record
         elif key in history:
             del history[key]
+    # Local history stays complete; only outputs that no longer exist are pruned.
+    # Recency is enforced at publication time, never by deleting local records.
     history = {key: value for key, value in history.items() if key in current_keys}
     completed = sorted(history.values(), key=lambda record: record.get("sort_key", 0), reverse=True)
-    current_records = [record for record in completed if record["name"].split("/", 1)[0] in scope]
+    active_slides = slides_from_directories(active_directories)
+    fallback_slides = {max(log_candidates)[1]} if log_candidates else set()
+    recent_slides = {record["name"].split("/", 1)[0] for record in completed if is_recent(record)}
+    raw_scope = active_slides or fallback_slides or recent_slides or all_slides
+    scope = sorted(slide for slide in raw_scope if SLIDE_RE.fullmatch(slide))[:MAX_SCOPE] or sorted(all_slides)[:1] or ["slide-000"]
+    current_records = [record for record in completed
+                       if record["name"].split("/", 1)[0] in scope and is_recent(record)]
     issues = [record for record in current_records if record["status"] in {"failed", "warning", "unknown"}][:MAX_ISSUES]
     successes = [record for record in current_records if record["status"] == "success"][:MAX_SUCCESS]
     running = [{key: value for key, value in record.items() if key not in {"sort_key", "time"}} for record in records if record["status"] == "running"]
