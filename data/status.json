@@ -1,63 +1,263 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-21T17:08:22+08:00",
+  "updated_at": "2026-11-21T17:29:38+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
-  "total": 364,
+  "total": 3388,
   "counts": {
-    "success": 159,
-    "warning": 3,
-    "failed": 0,
-    "running": 0,
-    "pending": 202,
-    "unknown": 0
+    "success": 346,
+    "warning": 631,
+    "failed": 182,
+    "running": 1,
+    "pending": 2226,
+    "unknown": 2
   },
   "scope": [
-    "slide-010"
+    "s000"
   ],
-  "running_tasks": [],
-  "issues": [],
-  "recent_success": [
+  "running_tasks": [
     {
-      "name": "slide-010/2.10",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-21T10:45:34+08:00"
-    },
-    {
-      "name": "slide-010/2.00",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-21T09:19:15+08:00"
-    },
-    {
-      "name": "slide-010/1.95",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-21T08:04:59+08:00"
-    },
-    {
-      "name": "slide-010/1.90",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-21T07:14:59+08:00"
-    },
-    {
-      "name": "slide-010/1.85",
-      "group": "3C",
-      "status": "success",
-      "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-21T06:12:17+08:00"
+      "name": "s000/3.80",
+      "group": "2H-3ea9f1",
+      "status": "running",
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
     }
-  ]
+  ],
+  "issues": [
+    {
+      "name": "s000/3.60",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.40",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.20",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.00",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.80",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.60",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.40",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.20",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.00",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.90",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.80",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.70",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.60",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.50",
+      "group": "2H-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.80",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.60",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.40",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.20",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/3.00",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.80",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.60",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.40",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.20",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/2.00",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.90",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.80",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.70",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.60",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.50",
+      "group": "3C-3ea9f1",
+      "status": "failed",
+      "phase": "relax",
+      "detail": "非零退出码",
+      "time": "2026-11-21T16:27:00+08:00"
+    }
+  ],
+  "recent_success": []
 }
