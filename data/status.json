@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-21T16:00:04+08:00",
+  "updated_at": "2026-11-21T17:08:22+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
-  "job_active": false,
+  "job_active": true,
   "total": 364,
   "counts": {
     "success": 159,
@@ -14,43 +14,50 @@
     "unknown": 0
   },
   "scope": [
-    "slide-001"
+    "slide-010"
   ],
   "running_tasks": [],
-  "issues": [
-    {
-      "name": "slide-001/1.95",
-      "group": "2H",
-      "status": "warning",
-      "phase": "relax",
-      "detail": "正常退出但未收敛",
-      "time": "2026-11-05T09:55:28+08:00"
-    },
-    {
-      "name": "slide-001/2.00",
-      "group": "2H",
-      "status": "warning",
-      "phase": "relax",
-      "detail": "正常退出但未收敛",
-      "time": "2026-11-05T06:56:43+08:00"
-    },
-    {
-      "name": "slide-001/2.10",
-      "group": "2H",
-      "status": "warning",
-      "phase": "relax",
-      "detail": "正常退出但未收敛",
-      "time": "2026-11-05T03:59:41+08:00"
-    }
-  ],
+  "issues": [],
   "recent_success": [
     {
-      "name": "slide-001/1.90",
-      "group": "2H",
+      "name": "slide-010/2.10",
+      "group": "3C",
       "status": "success",
       "phase": "scf",
       "detail": "计算成功",
-      "time": "2026-11-05T13:06:44+08:00"
+      "time": "2026-11-21T10:45:34+08:00"
+    },
+    {
+      "name": "slide-010/2.00",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-21T09:19:15+08:00"
+    },
+    {
+      "name": "slide-010/1.95",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-21T08:04:59+08:00"
+    },
+    {
+      "name": "slide-010/1.90",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-21T07:14:59+08:00"
+    },
+    {
+      "name": "slide-010/1.85",
+      "group": "3C",
+      "status": "success",
+      "phase": "scf",
+      "detail": "计算成功",
+      "time": "2026-11-21T06:12:17+08:00"
     }
   ]
 }
