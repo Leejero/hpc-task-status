@@ -22,7 +22,7 @@ RUNNING_KEYS = RECORD_KEYS - {"time"}
 STATES = {"success", "warning", "failed", "running", "pending", "unknown"}
 DETAILS = {"计算成功", "计算异常终止", "计算证据不完整", "能量记录缺失或无效", "静态计算未收敛", "非零退出码", "正常退出但未收敛", "存在未完成输出", "静态计算进行中", "弛豫计算进行中"}
 NAME_RE = re.compile(r"^[^/\s]+/[0-9]+(?:\.[0-9]+)?$")
-SCOPE_RE = re.compile(r"^slide-[0-9]{3,}$")
+SCOPE_RE = re.compile(r"^(?:slide-[0-9]{3,}|s[0-9]{3,})$")
 
 
 def in_scope(record, scope):

@@ -267,5 +267,106 @@ class CollectorTest(unittest.TestCase):
             publisher.validate({'schema_version': 1})
 
 
+class DiscoveryTest(unittest.TestCase):
+    """All task trees are discovered dynamically; no folder is privileged."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.config = self.root / 'tasks.json'
+        self.config.write_text(json.dumps({'discover': True, 'search_roots': [str(self.root)]}), encoding='utf-8')
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def collect(self, active_directories=None):
+        return collector.collect(self.config, active=False, active_directories=active_directories or set())
+
+    def make_phased(self, relative, rows):
+        base = self.root / relative
+        (base / 'relax').mkdir(parents=True, exist_ok=True)
+        (base / 'scf').mkdir(parents=True, exist_ok=True)
+        (base / 'pairs.tsv').write_text(
+            '# slide\tdistance\tdirection\tstacking\n' +
+            ''.join('\t'.join(row) + '\n' for row in rows), encoding='utf-8')
+        return base
+
+    def make_flat(self, relative, rows):
+        base = self.root / relative
+        base.mkdir(parents=True, exist_ok=True)
+        (base / 'pairs.tsv').write_text(
+            '# case\tslide\td_HCu\n' + ''.join('\t'.join(row) + '\n' for row in rows), encoding='utf-8')
+        return base
+
+    def assert_success(self, directory, phase):
+        directory.mkdir(parents=True, exist_ok=True)
+        marker = 'reached required accuracy' if phase == 'relax' else 'EDIFF is reached'
+        (directory / 'OUTCAR').write_text(marker + '\nenergy  without entropy=  -123.456\n', encoding='utf-8')
+        (directory / 'energy.txt').write_text('-123.456\n', encoding='ascii')
+        return directory
+
+    def test_discovers_arbitrary_folder_names_and_both_layouts(self):
+        phased = self.make_phased('unexpected/deep/place', [('slide-000', 'd-2.10', 'f1_1', 'norm')])
+        self.assert_success(phased / 'relax' / 'slide-000' / 'd-2.10' / 'f1_1' / 'norm', 'relax')
+        self.assert_success(phased / 'scf' / 'slide-000' / 'd-2.10' / 'f1_1' / 'norm', 'scf')
+        flat = self.make_flat('another/tree', [('2H', 's000', '3.80')])
+        self.assert_success(flat / '2H' / 's000' / 'd-3.80', 'relax')
+        data = self.collect()
+        self.assertEqual(data['total'], 2)
+        self.assertEqual(data['counts']['success'], 2)
+        self.assertEqual(sorted(record['name'] for record in data['history']), ['s000/3.80', 'slide-000/2.10'])
+        self.assertEqual(len({record['group'] for record in data['history']}), 2)
+        self.assertTrue(all(len(record['group']) <= 20 for record in data['history']))
+        public = collector.public_data(data)
+        self.assertEqual(public['scope'], ['s000', 'slide-000'])
+        self.assertEqual(len(public['recent_success']), 2)
+        publisher.validate(public)
+        self.assertNotIn(str(self.root), json.dumps(public))
+
+    def test_flat_log_failures_and_running_process(self):
+        flat = self.make_flat('pass/submit', [('2H', 's000', '3.80'), ('2H', 's002', '2.00')])
+        now = dt.datetime.now(collector.SHANGHAI)
+        log = flat / 'run_2H.log'
+        log.write_text('[{}] FAIL s002 d-2.00 rc=7\n'.format(now.strftime('%m-%d %H:%M')), encoding='utf-8')
+        os.utime(log, (now.timestamp(), now.timestamp()))
+        running = flat / '2H' / 's000' / 'd-3.80'
+        running.mkdir(parents=True, exist_ok=True)
+        (running / 'OUTCAR').write_text('still running', encoding='utf-8')
+        data = self.collect({str(running)})
+        public = collector.public_data(data)
+        self.assertEqual(public['scope'], ['s000'])
+        self.assertEqual(data['counts']['failed'], 1)
+        self.assertEqual(data['counts']['running'], 1)
+        self.assertEqual(public['running_tasks'][0]['name'], 's000/3.80')
+        self.assertEqual(public['running_tasks'][0]['group'][:2], '2H')
+        # s002 is a real failure but outside the active slide, so it stays in counts only.
+        self.assertEqual(public['issues'], [])
+        publisher.validate(public)
+
+    def test_running_match_respects_case_label(self):
+        flat = self.make_flat('pass/submit', [('2H', 's000', '3.80'), ('3C', 's000', '3.80')])
+        running = flat / '2H' / 's000' / 'd-3.80'
+        running.mkdir(parents=True, exist_ok=True)
+        (running / 'OUTCAR').write_text('still running', encoding='utf-8')
+        data = self.collect({str(running)})
+        self.assertEqual(len(data['running_tasks']), 1)
+        self.assertTrue(data['running_tasks'][0]['group'].startswith('2H'))
+        publisher.validate(collector.public_data(data))
+
+    def test_flat_event_dates_are_parsed_from_mm_dd_log(self):
+        flat = self.make_flat('pass/submit', [('2H', 's000', '3.80')])
+        now = dt.datetime.now(collector.SHANGHAI)
+        log = flat / 'run_2H.log'
+        log.write_text('[{}] FAIL s000 d-3.80 rc=7\n'.format(now.strftime('%m-%d %H:%M')), encoding='utf-8')
+        os.utime(log, (now.timestamp(), now.timestamp()))
+        events = collector.read_events(flat)
+        self.assertIn(('s000', 'd-3.80'), events)
+        event = events[('s000', 'd-3.80')]['RELAX']
+        self.assertTrue(event['failed'])
+        self.assertEqual(event['code'], '7')
+        self.assertEqual(event['date'], now.date().isoformat())
+        self.assertEqual(collector.last_event_slide(flat)[1], 's000')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,37 +1,43 @@
 #!/usr/bin/env python3
-"""Collect VASP states into counts and a recent-activity completion summary.
+"""Discover every VASP subtask and publish a recent-activity completion summary.
 
-Only current running tasks and completion records finished inside the recent
-activity window are published; pending tasks remain counts. Subtask names retain
-slide/distance identifiers. Logs of the current job root (run.log, run_v6.log,
-...) determine the current scope; inherited archive logs are used only to date
-outputs copied from older runs and can never decide the published scope. Dates
-in clock-only multi-day run logs are reconstructed from chronological order.
+Task trees are discovered dynamically from pairs.tsv files under the user's own
+scratch/home space; no fixed project folder is privileged and any directory
+layout is supported by indexing real OUTCAR locations. Only current running
+tasks and completions inside the recent activity window are published; pending
+tasks remain counts. Subtask names keep their real slide/distance identifiers.
 """
 import argparse
 import csv
 import datetime as dt
+import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
 import tempfile
+from collections import defaultdict
 from pathlib import Path
 
 SCHEMA_VERSION = 2
 SHANGHAI = dt.timezone(dt.timedelta(hours=8))
 EVENT_RE = re.compile(r"^\[(\d{2}:\d{2}:\d{2})\]\s+(RELAX ok|RELAX FAIL|SCF\s+ok|SCF\s+FAIL|SCF SKIP)\s+([^\s/]+)/([^\s]+)(?:\s+\(?rc=(\d+)\)?)?")
 CLOCK_RE = re.compile(r"^\[(\d{2}:\d{2}:\d{2})\]")
+# [11-21 16:27] FAIL s010 d-2.40  rc=7
+FLAT_EVENT_RE = re.compile(r"^\[(\d{2})-(\d{2})\s+(\d{2}:\d{2})\]\s+(OK|FAIL|SKIP)\s+(\S+)\s+(\S+)(?:\s+rc=(\d+))?\s*$")
 FATAL_RE = re.compile(r"ERROR:|segmentation|killed|out of memory|BAD TERMINATION|forrtl: error|internal error", re.IGNORECASE)
-SLIDE_RE = re.compile(r"^slide-[0-9]{3,}$")
+SLIDE_RE = re.compile(r"^(?:slide-[0-9]{3,}|s[0-9]{3,})$")
+DIST_DIR_RE = re.compile(r"^d-?([0-9]+(?:\.[0-9]+)?)$")
 FRESH_SECONDS = 45 * 60
+TAIL_BYTES = 256 * 1024
 RECENT_WINDOW_SECONDS = 24 * 3600
 FUTURE_TOLERANCE_SECONDS = 5 * 60
 MAX_SUCCESS = 5
 MAX_ISSUES = 30
 MAX_SCOPE = 10
 LOG_GLOB = "run*.log"
+PRUNE_DIRS = {"soft", ".git", "node_modules", "__pycache__", ".venv", "venv", "miniconda3", "anaconda3", ".cache", "build"}
 STATE_ORDER = ("success", "warning", "failed", "running", "pending", "unknown")
 
 
@@ -43,6 +49,11 @@ def now_iso():
     return dt.datetime.now(SHANGHAI).isoformat(timespec="seconds")
 
 
+def normalize_distance(value):
+    match = DIST_DIR_RE.fullmatch(value.strip())
+    return match.group(1) if match else value.strip()
+
+
 def file_has(path, marker):
     try:
         with path.open("r", encoding="utf-8", errors="replace") as handle:
@@ -51,32 +62,70 @@ def file_has(path, marker):
         return False
 
 
+def tail_text(path, limit=TAIL_BYTES):
+    """Read only the end of a large VASP output; all final markers live there."""
+    try:
+        with path.open("rb") as handle:
+            handle.seek(0, os.SEEK_END)
+            size = handle.tell()
+            handle.seek(max(0, size - limit))
+            return handle.read().decode("utf-8", errors="replace")
+    except OSError:
+        return ""
+
+
+def outcar_evidence(directory, phase):
+    """Tail scan: convergence marker plus last reported total energy."""
+    import math
+    marker = "reached required accuracy" if phase == "relax" else "EDIFF is reached"
+    if not directory:
+        return "missing", None
+    outcar = directory / "OUTCAR"
+    if not outcar.is_file() or outcar.stat().st_size == 0:
+        return "missing", None
+    text = tail_text(outcar)
+    energy = None
+    for line in text.splitlines():
+        if "energy  without entropy=" in line:
+            try:
+                energy = float(line.split("=", 1)[1].split()[0].replace("D", "E"))
+            except (ValueError, IndexError):
+                pass
+    if energy is not None and not math.isfinite(energy):
+        energy = None
+    return ("converged" if marker in text else "unconverged"), energy
+
+
 def convergence_state(directory, phase):
+    if not directory:
+        return "missing"
     outcar = directory / "OUTCAR"
     if not outcar.is_file() or outcar.stat().st_size == 0:
         return "missing"
-    marker = "reached required accuracy" if phase == "relax" else "EDIFF is reached"
-    return "converged" if file_has(outcar, marker) else "unconverged"
+    return outcar_evidence(directory, phase)[0]
 
 
 def output_has(directory, pattern):
+    if not directory:
+        return False
     for name in ("vasp.out", "OUTCAR"):
-        try:
-            with (directory / name).open("r", encoding="utf-8", errors="replace") as handle:
-                if any(pattern.search(line) for line in handle):
-                    return True
-        except OSError:
-            pass
+        path = directory / name
+        if path.is_file() and any(pattern.search(line) for line in tail_text(path).splitlines()):
+            return True
     return False
 
 
 def is_fresh(directory):
+    if not directory:
+        return False
     threshold = dt.datetime.now().timestamp() - FRESH_SECONDS
     return any((directory / name).is_file() and (directory / name).stat().st_mtime >= threshold for name in ("vasp.out", "OUTCAR"))
 
 
 def valid_energy(directory):
     import math
+    if not directory:
+        return False
     try:
         fields = (directory / "energy.txt").read_text(encoding="ascii").strip().split()
         return len(fields) == 1 and math.isfinite(float(fields[0].replace("D", "E")))
@@ -86,6 +135,8 @@ def valid_energy(directory):
 
 def output_mtime(directory):
     """Return the date-bearing mtime of the phase's primary output file."""
+    if not directory:
+        return None
     for name in ("OUTCAR", "vasp.out", "energy.txt"):
         try:
             return (directory / name).stat().st_mtime
@@ -100,7 +151,6 @@ def clock_seconds(clock):
 
 
 def clock_timestamp(reference, clock):
-    """Attach a run.log clock to the calendar date of that task's output."""
     if reference is None:
         return None
     if not clock:
@@ -117,7 +167,6 @@ def clock_timestamp(reference, clock):
 
 
 def event_timestamp(event):
-    """Use the calendar date reconstructed from the log's chronology."""
     date, clock = event.get("date"), event.get("clock")
     if not date or not clock:
         return None
@@ -137,7 +186,7 @@ def run_logs(root):
 
 
 def read_log_events(path):
-    """Reconstruct event dates by walking one clock-only log backwards in time."""
+    """Reconstruct phased event dates by walking a clock-only log backwards."""
     events = {}
     try:
         lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
@@ -170,30 +219,69 @@ def read_log_events(path):
     return events
 
 
+def read_flat_log_events(path):
+    """Parse [MM-DD HH:MM] OK/FAIL/SKIP <slide> d-<distance> rc=<n> logs."""
+    events = {}
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        anchor = dt.datetime.fromtimestamp(path.stat().st_mtime, SHANGHAI)
+    except OSError:
+        return events
+    for line in lines:
+        match = FLAT_EVENT_RE.match(line.strip())
+        if not match:
+            continue
+        month, day, clock, action, slide, distance, code = match.groups()
+        try:
+            moment = dt.datetime(anchor.year, int(month), int(day), int(clock[:2]), int(clock[3:]), 0, tzinfo=SHANGHAI)
+            if moment > anchor + dt.timedelta(days=1):
+                moment = moment.replace(year=moment.year - 1)
+        except ValueError:
+            continue
+        events.setdefault((slide, distance), {})["RELAX"] = {
+            "clock": clock + ":00", "date": moment.date().isoformat(),
+            "code": code, "failed": action == "FAIL",
+        }
+    return events
+
+
 def read_events(root):
     """Overlay all current-job logs, oldest first so newer logs win."""
     events = {}
     for path in reversed(run_logs(root)):
         for key, phases in read_log_events(path).items():
             events.setdefault(key, {}).update(phases)
+        for key, phases in read_flat_log_events(path).items():
+            events.setdefault(key, {}).update(phases)
     return events
+
+
+def find_events(events, slide, distance):
+    """Accept raw d-2.10, normalized 2.10, and re-prefixed event keys."""
+    normalized = normalize_distance(distance)
+    for key in ((slide, distance), (slide, normalized), (slide, "d-" + normalized)):
+        if key in events:
+            return events[key]
+    return {}
 
 
 def last_event_slide(root):
     """Last slide of the newest current-job log; never uses inherited archives."""
     for path in run_logs(root):
-        result = None
+        slides = []
         try:
-            mtime = path.stat().st_mtime
             with path.open("r", encoding="utf-8", errors="replace") as handle:
                 for line in handle:
                     match = EVENT_RE.match(line.strip())
                     if match:
-                        result = match.group(3)
+                        slides.append(match.group(3))
+                    match = FLAT_EVENT_RE.match(line.strip())
+                    if match:
+                        slides.append(match.group(5))
         except OSError:
             continue
-        if result:
-            return (mtime, result)
+        if slides:
+            return (path.stat().st_mtime, slides[-1])
     return None
 
 
@@ -243,7 +331,57 @@ def distance_name(value):
     return value[2:] if value.startswith("d-") else value
 
 
+def detail_for_failure(event, default="存在未完成输出"):
+    if event.get("failed"):
+        return ("failed", "非零退出码") if event.get("code") not in (None, "0") else ("warning", "正常退出但未收敛")
+    return "unknown", default
+
+
+def classify(relax_dir, scf_dir, relax, scf, event, fresh_scf, fresh_relax, active_phase, single_phase):
+    """Strict state machine shared by explicit-job and discovered task paths."""
+    def untouched():
+        status, detail = detail_for_failure(event)
+        if status == "unknown" and relax == "missing" and scf == "missing":
+            return "pending", "relax", "尚未开始"
+        return status, "relax", detail
+
+    if active_phase:
+        return "running", active_phase, "静态计算进行中" if active_phase == "scf" else "弛豫计算进行中"
+    fatal = output_has(relax_dir, FATAL_RE) or output_has(scf_dir, FATAL_RE)
+    if single_phase:
+        energy = outcar_evidence(relax_dir, "relax")[1]
+        if relax == "converged" and energy is not None:
+            return "success", "relax", "计算成功"
+        if fatal:
+            return "failed", "relax", "计算异常终止"
+        if relax == "converged":
+            return "warning", "relax", "能量记录缺失或无效"
+        if relax == "unconverged":
+            if fresh_relax:
+                return "running", "relax", "弛豫计算进行中"
+            return untouched()
+        return untouched()
+    if relax == "converged" and scf == "converged" and valid_energy(scf_dir):
+        return "success", "scf", "计算成功"
+    if fatal:
+        return "failed", "scf" if relax == "converged" else "relax", "计算异常终止"
+    if scf == "converged":
+        if relax != "converged":
+            return "unknown", "scf", "计算证据不完整"
+        return "warning", "scf", "能量记录缺失或无效"
+    if relax == "converged":
+        if fresh_scf:
+            return "running", "scf", "静态计算进行中"
+        return "warning", "scf", "静态计算未收敛"
+    if relax == "unconverged":
+        if fresh_relax:
+            return "running", "relax", "弛豫计算进行中"
+        return untouched()
+    return untouched()
+
+
 def evaluate(root, inherit, row, events, inherited_events, active_directories, allow_time_fallback):
+    """Explicit-tree evaluation (used by tasks.json with fixed roots)."""
     slide, distance = row[:2]
     direction = row[2] if len(row) > 2 else "f1_1"
     stacking = row[3] if len(row) > 3 else "norm"
@@ -258,42 +396,15 @@ def evaluate(root, inherit, row, events, inherited_events, active_directories, a
         scf_dir = inherited_scf
     relax = convergence_state(relax_dir, "relax")
     scf = convergence_state(scf_dir, "scf")
-    task_events = events.get((slide, distance)) or inherited_events.get((slide, distance)) or {}
+    task_events = find_events(events, slide, distance) or find_events(inherited_events, slide, distance)
     relax_event = task_events.get("RELAX", {})
     scf_event = task_events.get("SCF", {})
     event = relax_event
     active_phase = "scf" if str(scf_dir) in active_directories else "relax" if str(relax_dir) in active_directories else None
     fresh_scf = allow_time_fallback and is_fresh(scf_dir)
     fresh_relax = allow_time_fallback and is_fresh(relax_dir)
-    status, phase, detail = "pending", "relax", "尚未开始"
-    if active_phase:
-        status, phase = "running", active_phase
-        detail = "静态计算进行中" if active_phase == "scf" else "弛豫计算进行中"
-    elif relax == "converged" and scf == "converged" and valid_energy(scf_dir):
-        status, phase, detail = "success", "scf", "计算成功"
-    elif output_has(relax_dir, FATAL_RE) or output_has(scf_dir, FATAL_RE):
-        status, phase, detail = "failed", "scf" if relax == "converged" else "relax", "计算异常终止"
-    elif scf == "converged":
-        phase = "scf"
-        status, detail = ("unknown", "计算证据不完整") if relax != "converged" else ("warning", "能量记录缺失或无效")
-    elif relax == "converged":
-        phase = "scf"
-        if scf == "unconverged":
-            status, detail = ("running", "静态计算进行中") if fresh_scf else ("warning", "静态计算未收敛")
-        else:
-            detail = "静态计算等待开始"
-    elif relax == "unconverged":
-        if fresh_relax:
-            status, detail = "running", "弛豫计算进行中"
-        elif event.get("failed") and event.get("code") not in (None, "0"):
-            status, detail = "failed", "非零退出码"
-        elif event.get("failed"):
-            status, detail = "warning", "正常退出但未收敛"
-        else:
-            status, detail = "unknown", "存在未完成输出"
-    elif event.get("failed"):
-        status, detail = ("failed", "非零退出码") if event.get("code") not in (None, "0") else ("warning", "正常退出但未收敛")
-    elif relax_dir.is_dir():
+    status, phase, detail = classify(relax_dir, scf_dir, relax, scf, event, fresh_scf, fresh_relax, active_phase, False)
+    if not active_phase and status == "pending" and relax_dir.is_dir():
         detail = "已准备，等待开始"
     event = scf_event if status == "success" and scf_event else relax_event
     timestamp = event_timestamp(event)
@@ -305,40 +416,157 @@ def evaluate(root, inherit, row, events, inherited_events, active_directories, a
     record = {
         "name": slide + "/" + distance_name(distance),
         "group": "2H" if root.name == "2H" else "3C" if root.name == "3C" else root.name,
-        "status": status,
-        "phase": phase,
-        "detail": detail,
+        "status": status, "phase": phase, "detail": detail,
         "time": iso_time(timestamp) if timestamp is not None else "",
         "sort_key": timestamp or 0,
     }
     return record
 
 
-def collect(config_path, active=None, history_path=None, active_directories=None):
-    config_path = Path(config_path).resolve()
-    config = json.loads(config_path.read_text(encoding="utf-8"))
-    if not isinstance(config.get("jobs"), list) or not config["jobs"]:
-        raise ValueError("tasks.json requires a non-empty jobs list")
-    if active is None:
-        active = read_slurm_active()
-    process_scan = active_directories is None
-    if process_scan:
-        active_directories = process_directories()
-    records = []
-    all_slides, log_candidates = set(), []
-    for job in config["jobs"]:
-        if not job.get("enabled", True):
+def walk_files(base, filename, max_depth=12):
+    base = Path(base)
+    if not base.is_dir():
+        return
+    for dirpath, dirnames, filenames in os.walk(base):
+        relative_depth = len(Path(dirpath).relative_to(base).parts)
+        if relative_depth >= max_depth:
+            dirnames[:] = []
+        else:
+            dirnames[:] = [name for name in dirnames if name not in PRUNE_DIRS]
+        if filename in filenames:
+            yield Path(dirpath) / filename
+
+
+def resolve_search_roots(config):
+    roots = config.get("search_roots") or ["auto"]
+    bases = []
+    for item in roots:
+        candidates = []
+        if item == "auto":
+            user = os.environ.get("USER") or Path.home().name
+            candidates = [Path("/scratch") / user, Path.home()]
+        else:
+            candidates = [Path(item)]
+        for candidate in candidates:
+            path = candidate.resolve()
+            if path.is_dir() and path not in bases:
+                bases.append(path)
+    return bases
+
+
+def read_pair_rows(path):
+    try:
+        lines = path.read_text(encoding="utf-8-sig").splitlines()
+    except OSError:
+        return [], "phased"
+    header = next((line for line in lines if line.startswith("#")), "")
+    flat = "case" in header.lower()
+    rows = []
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith("#"):
             continue
-        root = Path(job["root"])
-        inherit = Path(job["inherit"]) if job.get("inherit") else None
-        with (root / "pairs.tsv").open("r", encoding="utf-8-sig", newline="") as handle:
-            rows = [row for row in csv.reader(handle, delimiter="\t") if row and not row[0].lstrip().startswith("#")]
-        all_slides.update(row[0] for row in rows)
-        candidate = last_event_slide(root)
-        if candidate:
-            log_candidates.append(candidate)
-        events, inherited_events = read_events(root), read_events(inherit) if inherit else {}
-        records.extend(evaluate(root, inherit, row, events, inherited_events, active_directories, not process_scan) for row in rows)
+        parts = [part.strip() for part in line.split("\t") if part.strip()]
+        if len(parts) < (3 if flat else 2):
+            continue
+        case, slide, distance = ("", parts[0], parts[1]) if not flat else (parts[0], parts[1], parts[2])
+        if not SLIDE_RE.fullmatch(slide):
+            continue
+        if not DIST_DIR_RE.fullmatch(distance) and not re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", distance):
+            continue
+        rows.append({"case": case, "slide": slide, "distance": normalize_distance(distance)})
+    return rows, "flat" if flat else "phased"
+
+
+def discover_trees(bases):
+    trees, seen = [], set()
+    for base in bases:
+        for pair_file in walk_files(base, "pairs.tsv"):
+            root = pair_file.parent
+            if root in seen:
+                continue
+            seen.add(root)
+            rows, layout = read_pair_rows(pair_file)
+            if rows:
+                trees.append({"base": base, "root": root, "rows": rows, "layout": layout})
+    return trees
+
+
+def owner_tree(directory, tree_roots):
+    for parent in (directory, *directory.parents):
+        if parent in tree_roots:
+            return parent
+    return None
+
+
+def index_outputs(bases, tree_roots):
+    index = defaultdict(list)
+    for base in bases:
+        for outcar in walk_files(base, "OUTCAR"):
+            directory = outcar.parent
+            parts = directory.parts
+            slide = next((part for part in parts if SLIDE_RE.fullmatch(part)), None)
+            distance = next((normalize_distance(part) for part in parts if DIST_DIR_RE.fullmatch(part)), None)
+            if not slide or not distance:
+                continue
+            tree = owner_tree(directory, tree_roots)
+            if tree is None:
+                continue
+            phase = "scf" if "scf" in parts else "relax"
+            index[(tree, slide, distance)].append((directory, phase))
+    return index
+
+
+def tree_group(base, root, case):
+    try:
+        relative = root.relative_to(base)
+    except ValueError:
+        relative = Path(root.name)
+    digest = hashlib.sha1(str(relative).encode("utf-8")).hexdigest()[:6]
+    prefix = (case or root.name)[:10].strip("-_")
+    return (prefix + "-" + digest)[:20]
+
+
+def evaluate_discovered(tree, row, outs, events, active_directories, allow_time_fallback):
+    slide, distance = row["slide"], row["distance"]
+    if row["case"]:
+        outs = [item for item in outs if row["case"] in item[0].parts]
+    relax_dir = next((directory for directory, phase in outs if phase == "relax"), None)
+    scf_dir = next((directory for directory, phase in outs if phase == "scf"), None)
+    task_dir = relax_dir or scf_dir
+    active_phase = None
+    for item in active_directories:
+        parts = Path(item).parts
+        if slide in parts and ("d-" + distance) in parts and (not row["case"] or row["case"] in parts):
+            active_phase = "scf" if "scf" in parts else "relax"
+            break
+        if task_dir and str(item) == str(task_dir):
+            active_phase = "relax" if relax_dir else "scf"
+            break
+    relax, relax_energy = outcar_evidence(relax_dir, "relax")
+    scf, scf_energy = outcar_evidence(scf_dir, "scf")
+    task_events = find_events(events, slide, distance)
+    event = task_events.get("SCF") or task_events.get("RELAX") or {}
+    status, phase, detail = classify(
+        relax_dir, scf_dir, relax, scf, event,
+        allow_time_fallback and is_fresh(scf_dir),
+        allow_time_fallback and is_fresh(relax_dir),
+        active_phase, scf_dir is None,
+    )
+    if status == "success" and scf_dir is not None and scf_energy is None and not valid_energy(scf_dir):
+        status, detail = "warning", "能量记录缺失或无效"
+    timestamp = event_timestamp(event)
+    if timestamp is None and status in {"success", "warning", "failed", "unknown"}:
+        timestamp = clock_timestamp(output_mtime(task_dir), event.get("clock"))
+    return {
+        "name": slide + "/" + distance,
+        "group": tree_group(tree["base"], tree["root"], row["case"]),
+        "status": status, "phase": phase, "detail": detail,
+        "time": iso_time(timestamp) if timestamp is not None else "",
+        "sort_key": timestamp or 0,
+    }
+
+
+def finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path):
     now_ts = dt.datetime.now().timestamp()
     window_start = now_ts - RECENT_WINDOW_SECONDS
 
@@ -360,7 +588,6 @@ def collect(config_path, active=None, history_path=None, active_directories=None
         elif key in history:
             del history[key]
     # Local history stays complete; only outputs that no longer exist are pruned.
-    # Recency is enforced at publication time, never by deleting local records.
     history = {key: value for key, value in history.items() if key in current_keys}
     completed = sorted(history.values(), key=lambda record: record.get("sort_key", 0), reverse=True)
     active_slides = slides_from_directories(active_directories)
@@ -368,13 +595,14 @@ def collect(config_path, active=None, history_path=None, active_directories=None
     recent_slides = {record["name"].split("/", 1)[0] for record in completed if is_recent(record)}
     raw_scope = active_slides or fallback_slides or recent_slides or all_slides
     scope = sorted(slide for slide in raw_scope if SLIDE_RE.fullmatch(slide))[:MAX_SCOPE] or sorted(all_slides)[:1] or ["slide-000"]
-    current_records = [record for record in completed
-                       if record["name"].split("/", 1)[0] in scope and is_recent(record)]
+    current_records = [record for record in completed if record["name"].split("/", 1)[0] in scope and is_recent(record)]
     issues = [record for record in current_records if record["status"] in {"failed", "warning", "unknown"}][:MAX_ISSUES]
     successes = [record for record in current_records if record["status"] == "success"][:MAX_SUCCESS]
     running = [{key: value for key, value in record.items() if key not in {"sort_key", "time"}} for record in records if record["status"] == "running"]
+
     def public(record):
         return {key: value for key, value in record.items() if key != "sort_key"}
+
     return {
         "schema_version": SCHEMA_VERSION,
         "updated_at": now_iso(),
@@ -389,6 +617,56 @@ def collect(config_path, active=None, history_path=None, active_directories=None
         "recent_success": [public(record) for record in successes],
         "history": completed,
     }
+
+
+def collect(config_path, active=None, history_path=None, active_directories=None):
+    config_path = Path(config_path).resolve()
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if active is None:
+        active = read_slurm_active()
+    process_scan = active_directories is None
+    if process_scan:
+        active_directories = process_directories()
+    if config.get("discover"):
+        return collect_discovered(config, active, process_scan, active_directories, history_path)
+    if not isinstance(config.get("jobs"), list) or not config["jobs"]:
+        raise ValueError("tasks.json requires discover=true or a non-empty jobs list")
+    records, all_slides, log_candidates = [], set(), []
+    for job in config["jobs"]:
+        if not job.get("enabled", True):
+            continue
+        root = Path(job["root"])
+        inherit = Path(job["inherit"]) if job.get("inherit") else None
+        with (root / "pairs.tsv").open("r", encoding="utf-8-sig", newline="") as handle:
+            rows = [row for row in csv.reader(handle, delimiter="\t") if row and not row[0].lstrip().startswith("#")]
+        all_slides.update(row[0] for row in rows)
+        candidate = last_event_slide(root)
+        if candidate:
+            log_candidates.append(candidate)
+        events, inherited_events = read_events(root), read_events(inherit) if inherit else {}
+        records.extend(evaluate(root, inherit, row, events, inherited_events, active_directories, not process_scan) for row in rows)
+    return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
+
+
+def collect_discovered(config, active, process_scan, active_directories, history_path):
+    bases = resolve_search_roots(config)
+    trees = discover_trees(bases)
+    if not trees:
+        raise ValueError("no pairs.tsv task trees discovered")
+    tree_roots = {tree["root"] for tree in trees}
+    outputs = index_outputs(bases, tree_roots)
+    events = {root: read_events(root) for root in tree_roots}
+    records, all_slides, log_candidates = [], set(), []
+    for tree in trees:
+        root = tree["root"]
+        all_slides.update(row["slide"] for row in tree["rows"])
+        candidate = last_event_slide(root)
+        if candidate:
+            log_candidates.append(candidate)
+        for row in tree["rows"]:
+            outs = outputs.get((root, row["slide"], row["distance"]), [])
+            records.append(evaluate_discovered(tree, row, outs, events[root], active_directories, not process_scan))
+    return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
 
 
 def public_data(data):

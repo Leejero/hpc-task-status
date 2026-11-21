@@ -86,7 +86,9 @@ App 端同时拉取 GitHub Raw 与 jsDelivr，并按 `updated_at` 选取**最新
 
 采集端按北京时间每天 08:00、10:00、12:00、14:00、16:00、18:00、20:00 更新，共 7 次。
 
-采集端位于服务器用户主目录顶层的 `server/`，每次动态读取 `pairs.tsv`，不固定子任务数量。`tasks.json` 的私有路径与真实任务结构不上传。
+采集端位于服务器用户主目录顶层的 `server/`。`tasks.json` 只声明 `discover: true` 与 `search_roots: ["auto"]`（默认取用户的 `/scratch/<user>` 与家目录），**不列出任何任务文件夹**：每次采集自动发现该范围内全部 `pairs.tsv` 任务树，并按真实的 `OUTCAR` 位置匹配子任务，因此任意目录层级与命名（如 `relax/slide-000/d-2.10/f1_1/norm`、`retry/work/slide-000/d-1.70`、单阶段的 `2H/s000/d-3.80`）都能被识别。任务数量与目录完全动态变化，不写死清单。
+
+兼容两类任务清单：表头 `# slide distance direction stacking` 的两阶段（RELAX+SCF）布局，以及 `# case slide d_HCu` 的单阶段布局（对应 `[MM-DD HH:MM] OK/FAIL/SKIP <slide> d-<distance> rc=<n>` 日志）。公开记录中的 `group` 是任务树相对路径的短哈希加 case 前缀，不泄露服务器路径；完整历史仍只留在采集端。
 
 - `collect_status.py`：检查 VASP 收敛与能量记录，当前目录优先，历史目录仅补齐当前未开始的结果；
 - `push_status.py`：校验紧凑格式及公开字段，推送后回读验证；
