@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-22T18:00:32+08:00",
+  "updated_at": "2026-11-22T20:00:32+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
@@ -18,7 +18,7 @@
   ],
   "running_tasks": [
     {
-      "name": "s000/1.60",
+      "name": "s000/1.50",
       "group": "2H-3ea9f1",
       "status": "running",
       "phase": "relax",
