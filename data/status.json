@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-22T12:00:32+08:00",
+  "updated_at": "2026-11-22T14:00:32+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 3388,
   "counts": {
     "success": 346,
-    "warning": 638,
-    "failed": 175,
+    "warning": 639,
+    "failed": 174,
     "running": 1,
     "pending": 2226,
     "unknown": 2
@@ -18,7 +18,7 @@
   ],
   "running_tasks": [
     {
-      "name": "s000/1.80",
+      "name": "s000/1.70",
       "group": "2H-3ea9f1",
       "status": "running",
       "phase": "relax",
@@ -83,14 +83,6 @@
       "time": "2026-11-21T16:27:00+08:00"
     },
     {
-      "name": "s000/1.70",
-      "group": "2H-3ea9f1",
-      "status": "failed",
-      "phase": "relax",
-      "detail": "非零退出码",
-      "time": "2026-11-21T16:27:00+08:00"
-    },
-    {
       "name": "s000/1.60",
       "group": "2H-3ea9f1",
       "status": "failed",
@@ -252,6 +244,14 @@
     },
     {
       "name": "s000/1.90",
+      "group": "2H-3ea9f1",
+      "status": "warning",
+      "phase": "scf",
+      "detail": "能量记录缺失或无效",
+      "time": "2026-11-21T16:27:00+08:00"
+    },
+    {
+      "name": "s000/1.80",
       "group": "2H-3ea9f1",
       "status": "warning",
       "phase": "scf",
