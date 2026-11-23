@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-23T14:48:21+08:00",
+  "updated_at": "2026-11-23T14:52:14+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
@@ -19,7 +19,7 @@
   "running_tasks": [
     {
       "name": "s000/3.60",
-      "group": "2H · fb_pass_submit",
+      "group": "fb_pass_submit",
       "status": "running",
       "phase": "scf",
       "detail": "静态计算进行中"
