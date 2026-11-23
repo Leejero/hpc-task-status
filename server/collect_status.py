@@ -4,9 +4,10 @@
 Task trees are discovered dynamically from pairs.tsv files, but only the tree
 owning the live VASP process is counted. Within that tree, only the slide
 directory of the running job is considered, and only distance directories whose
-VASP input set (INCAR/KPOINTS/POSCAR/POTCAR) has been prepared are included.
-Other slides, archived trees and unfinished input directories stay out of the
-totals. Subtask names keep their real slide/distance identifiers.
+input files (INCAR/KPOINTS/POSCAR) have been prepared are included; POTCAR is
+linked only when that distance actually starts. Other slides, archived trees
+and empty/stale directories stay out of the totals. Subtask names keep their
+real slide/distance identifiers.
 """
 import argparse
 import csv
@@ -340,9 +341,9 @@ def detail_for_failure(event, default="存在未完成输出"):
 def classify(relax_dir, scf_dir, relax, scf, event, fresh_scf, fresh_relax, active_phase, single_phase):
     """Strict state machine shared by explicit-job and discovered task paths."""
     def untouched():
-        status, detail = detail_for_failure(event)
-        if status == "unknown" and relax == "missing" and scf == "missing":
+        if relax == "missing" and scf == "missing":
             return "pending", "relax", "尚未开始"
+        status, detail = detail_for_failure(event)
         return status, "relax", detail
 
     if active_phase:
@@ -708,7 +709,7 @@ def prepared_distance_dirs(root, case, slide):
     for child in directory.iterdir():
         if not child.is_dir() or not DIST_DIR_RE.fullmatch(child.name):
             continue
-        if all((child / name).exists() for name in ("INCAR", "KPOINTS", "POSCAR", "POTCAR")):
+        if all((child / name).exists() for name in ("INCAR", "KPOINTS", "POSCAR")):
             prepared[normalize_distance(child.name)] = child
     return prepared
 
