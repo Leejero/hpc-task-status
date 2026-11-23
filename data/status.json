@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-23T14:40:43+08:00",
+  "updated_at": "2026-11-23T14:48:21+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
-  "total": 180,
+  "total": 2,
   "counts": {
     "success": 0,
-    "warning": 11,
-    "failed": 168,
+    "warning": 1,
+    "failed": 0,
     "running": 1,
     "pending": 0,
     "unknown": 0
@@ -21,8 +21,8 @@
       "name": "s000/3.60",
       "group": "2H · fb_pass_submit",
       "status": "running",
-      "phase": "relax",
-      "detail": "弛豫计算进行中"
+      "phase": "scf",
+      "detail": "静态计算进行中"
     }
   ],
   "issues": [],
