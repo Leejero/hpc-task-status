@@ -16,11 +16,12 @@ RECENT_WINDOW_SECONDS = 24 * 3600
 FUTURE_TOLERANCE_SECONDS = 5 * 60
 MAX_SNAPSHOT_AGE_SECONDS = 6 * 3600
 SHANGHAI = dt.timezone(dt.timedelta(hours=8))
-TOP_KEYS = {"schema_version", "updated_at", "timezone", "collector_status", "job_active", "counts", "total", "scope", "running_tasks", "issues", "recent_success"}
+TOP_KEYS = {"schema_version", "updated_at", "timezone", "collector_status", "job_active", "counts", "phase_counts", "total", "scope", "running_tasks", "issues", "recent_success", "phase_cards"}
 RECORD_KEYS = {"name", "group", "status", "phase", "detail", "time"}
 RUNNING_KEYS = RECORD_KEYS - {"time"}
+PHASE_CARD_KEYS = {"name", "group", "status", "phase", "steps", "energy", "detail", "time"}
 STATES = {"success", "warning", "failed", "running", "pending", "unknown"}
-DETAILS = {"计算成功", "计算异常终止", "计算证据不完整", "能量记录缺失或无效", "静态计算未收敛", "非零退出码", "正常退出但未收敛", "存在未完成输出", "静态计算进行中", "弛豫计算进行中"}
+DETAILS = {"计算成功", "计算异常终止", "计算证据不完整", "能量记录缺失或无效", "静态计算未收敛", "非零退出码", "正常退出但未收敛", "存在未完成输出", "静态计算进行中", "弛豫计算进行中", "结构优化收敛", "自洽收敛", "弛豫未收敛", "等待结构优化", "尚未开始"}
 NAME_RE = re.compile(r"^[^/\s]+/[0-9]+(?:\.[0-9]+)?$")
 SCOPE_RE = re.compile(r"^(?:slide-[0-9]{3,}|s[0-9]{3,})$")
 
@@ -42,7 +43,7 @@ def parse_timestamp(value):
 
 
 def validate(data):
-    if set(data) != TOP_KEYS or data.get("schema_version") != 2:
+    if set(data) != TOP_KEYS or data.get("schema_version") != 3:
         raise ValueError("unexpected compact status schema")
     if data.get("timezone") != "Asia/Shanghai" or data.get("collector_status") != "ok" or not isinstance(data.get("job_active"), bool):
         raise ValueError("invalid collection metadata")
@@ -52,11 +53,17 @@ def validate(data):
         raise ValueError("counts do not match total")
     if any(not isinstance(value, int) or value < 0 for value in data["counts"].values()):
         raise ValueError("invalid counts")
-    if any(not isinstance(data.get(key), list) for key in ("scope", "issues", "recent_success", "running_tasks")):
+    if set(data.get("phase_counts", {})) != {"relax", "scf"}:
+        raise ValueError("invalid phase counts")
+    for phase in ("relax", "scf"):
+        values = data["phase_counts"][phase]
+        if set(values) != STATES or sum(values.values()) != data["total"] or any(not isinstance(value, int) or value < 0 for value in values.values()):
+            raise ValueError("phase counts do not match total")
+    if any(not isinstance(data.get(key), list) for key in ("scope", "issues", "recent_success", "running_tasks", "phase_cards")):
         raise ValueError("invalid compact record lists")
     if not 1 <= len(data["scope"]) <= 10 or any(not isinstance(slide, str) or not SCOPE_RE.fullmatch(slide) for slide in data["scope"]):
         raise ValueError("invalid current slide scope")
-    if len(data["issues"]) > 30 or len(data["recent_success"]) > 5:
+    if len(data["issues"]) > 30 or len(data["recent_success"]) > 5 or len(data["phase_cards"]) > 30:
         raise ValueError("compact record limit exceeded")
     if len(data["running_tasks"]) != data["counts"]["running"]:
         raise ValueError("running records do not match count")
@@ -86,6 +93,26 @@ def validate(data):
             raise ValueError("invalid record detail")
         if not isinstance(record["group"], str) or len(record["group"]) > 20 or not isinstance(record["time"], str) or len(record["time"]) > 30:
             raise ValueError("invalid record group or time")
+    for record in data["phase_cards"]:
+        if not in_scope(record, data["scope"]):
+            raise ValueError("phase card is outside current slide scope")
+        if set(record) != PHASE_CARD_KEYS or not NAME_RE.fullmatch(record["name"]):
+            raise ValueError("invalid phase card fields")
+        if record["status"] not in {"success", "warning", "failed", "unknown"} or record["phase"] not in {"relax", "scf"}:
+            raise ValueError("invalid phase card state")
+        if record["detail"] not in DETAILS:
+            raise ValueError("invalid phase card detail")
+        steps = record["steps"]
+        if steps is not None and (not isinstance(steps, int) or steps < 0):
+            raise ValueError("invalid phase card step count")
+        energy = record["energy"]
+        if energy is not None and not isinstance(energy, (int, float)):
+            raise ValueError("invalid phase card energy")
+        completed_at = parse_timestamp(record["time"])
+        if completed_at is None or not updated_at - RECENT_WINDOW_SECONDS <= completed_at <= updated_at + FUTURE_TOLERANCE_SECONDS:
+            raise ValueError("phase card is outside the recent activity window")
+        if not isinstance(record["group"], str) or len(record["group"]) > 20 or not isinstance(record["time"], str) or len(record["time"]) > 30:
+            raise ValueError("invalid phase card group or time")
 
 
 def request(url, token, method="GET", payload=None):
@@ -134,4 +161,9 @@ if __name__ == "__main__":
         sys.exit(main())
     except (OSError, ValueError, KeyError, json.JSONDecodeError, urllib.error.URLError) as exc:
         print("Publish failed: {}: {}".format(type(exc).__name__, str(exc)), file=sys.stderr)
+        if isinstance(exc, urllib.error.HTTPError):
+            try:
+                print(exc.read().decode("utf-8", errors="replace"), file=sys.stderr)
+            except OSError:
+                pass
         sys.exit(1)

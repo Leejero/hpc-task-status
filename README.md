@@ -6,9 +6,9 @@
 
 ## 数据文件
 
-App 只读取 `data/status.json`，使用 schema 2 紧凑格式。**统计范围仅为当前运行中任务所在 slide 里已准备运行的子任务**：采集器先由本用户 VASP 进程的实际工作目录定位所属 `pairs.tsv` 任务树，再只取该进程所在的 slide 目录，最后仅纳入 `INCAR`/`KPOINTS`/`POSCAR` 已齐备的距离子目录（`POTCAR` 在该距离实际启动时才链接，不影响待运行统计）；同一任务树中其他 slide、归档、旧版本、备份目录以及只有零散残留文件、尚未准备运行的距离目录一律不计入 `total`。进程短暂不可见时（作业间隙），依次用 `tasks.json` 的私有 `batch_root` 提示、最近更新的运行日志、最近更新的 `pairs.tsv` 回退，不写死任何文件夹。
+App 只读取 `data/status.json`，使用 schema 3 紧凑格式。**统计范围仅为当前运行中任务所在 slide 里已准备运行的子任务**：采集器先由本用户 VASP 进程的实际工作目录定位所属 `pairs.tsv` 任务树，再只取该进程所在的 slide 目录，最后仅纳入 `INCAR`/`KPOINTS`/`POSCAR` 已齐备的距离子目录（`POTCAR` 在该距离实际启动时才链接，不影响待运行统计）；同一任务树中其他 slide、归档、旧版本、备份目录以及只有零散残留文件、尚未准备运行的距离目录一律不计入 `total`。进程短暂不可见时（作业间隙），依次用 `tasks.json` 的私有 `batch_root` 提示、最近更新的运行日志、最近更新的 `pairs.tsv` 回退，不写死任何文件夹。
 
-明细区块只包含**当前计算 slide**：实际运行的 RELAX/SCF 任务、最多 30 条该 slide 的失败/警告/未知记录，以及 5 条该 slide 的最近成功记录。跨 slide 的历史完成记录保留在采集端本地，不进入公开列表；等待中的子任务仅计数。公开记录中的 `group` 直接使用任务树文件夹名（如 `fb_pass_submit`），只含纯 ASCII 目录名，不含 case、分隔符或完整路径，避免手机端出现乱码。
+明细区块只包含**当前计算 slide**。`phase_counts` 分别给出 `relax`（结构优化）与 `scf`（自洽计算）的状态计数；`phase_cards` 为近 24 小时内完成的阶段记录，每个阶段单独成卡，最多 30 条。结构优化卡片带 `steps`（第几个离子步）与 `energy`（OSZICAR 最后一个 `E0`，eV）；自洽卡片带 `steps`（第几个电子步）与 `energy`（最终 `E0`，eV）。跨 slide 的历史完成记录保留在采集端本地，不进入公开列表；等待中的子任务仅计数。公开记录中的 `group` 直接使用任务树文件夹名（如 `fb_pass_submit`），只含纯 ASCII 目录名，不含 case、分隔符或完整路径，避免手机端出现乱码。
 
 **完成记录的时效**：`issues` 与 `recent_success` 只收录相对本次采集时间 24 小时内完成、且能判定完成时间的记录；无法判定时间或早于该窗口的记录只计入 `counts`，不进入公开明细。`push_status.py` 会逐条复核每条完成记录的 `time` 必须落在 `[updated_at - 24h, updated_at + 5min]`，并拒绝过期快照，防止旧记录被推送。
 
@@ -18,48 +18,56 @@ App 端同时拉取 GitHub Raw 与 jsDelivr，并按 `updated_at` 选取**最新
 
 ```json
 {
-  "schema_version": 2,
-  "updated_at": "2026-11-05T16:00:00+08:00",
+  "schema_version": 3,
+  "updated_at": "2026-11-23T15:18:36+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
-  "total": 2,
+  "total": 15,
   "counts": {
-    "success": 1,
-    "warning": 1,
+    "success": 2,
+    "warning": 0,
     "failed": 0,
-    "running": 0,
-    "pending": 0,
+    "running": 1,
+    "pending": 12,
     "unknown": 0
   },
-  "scope": ["slide-001"],
+  "phase_counts": {
+    "relax": {"success": 2, "warning": 0, "failed": 0, "running": 1, "pending": 12, "unknown": 0},
+    "scf": {"success": 2, "warning": 0, "failed": 0, "running": 0, "pending": 13, "unknown": 0}
+  },
+  "scope": ["s000"],
   "running_tasks": [
     {
-      "name": "slide-001/2.00",
-      "group": "2H",
+      "name": "s000/3.40",
+      "group": "fb_pass_submit",
       "status": "running",
       "phase": "relax",
       "detail": "弛豫计算进行中"
     }
   ],
-  "issues": [
+  "issues": [],
+  "recent_success": [],
+  "phase_cards": [
     {
-      "name": "slide-001/1.90",
-      "group": "2H",
-      "status": "warning",
+      "name": "s000/3.80",
+      "group": "fb_pass_submit",
       "phase": "relax",
-      "detail": "正常退出但未收敛",
-      "time": "2026-11-05T15:01:32+08:00"
-    }
-  ],
-  "recent_success": [
-    {
-      "name": "slide-001/2.10",
-      "group": "2H",
       "status": "success",
+      "steps": 39,
+      "energy": -753.27745,
+      "detail": "结构优化收敛",
+      "time": "2026-11-23T14:28:56+08:00"
+    },
+    {
+      "name": "s000/3.80",
+      "group": "fb_pass_submit",
       "phase": "scf",
-      "detail": "计算成功",
-      "time": "2026-11-05T15:26:44+08:00"
+      "status": "success",
+      "steps": 57,
+      "energy": -754.22242,
+      "detail": "自洽收敛",
+      "time": "2026-11-23T14:28:56+08:00"
     }
   ]
 }

@@ -84,12 +84,19 @@ class CollectorTest(unittest.TestCase):
 
     def valid_public(self, updated, record_time):
         return {
-            'schema_version': 2, 'updated_at': updated, 'timezone': 'Asia/Shanghai',
+            'schema_version': 3, 'updated_at': updated, 'timezone': 'Asia/Shanghai',
             'collector_status': 'ok', 'job_active': False, 'total': 2,
             'counts': {'success': 1, 'warning': 0, 'failed': 0, 'running': 0, 'pending': 1, 'unknown': 0},
+            'phase_counts': {
+                'relax': {'success': 1, 'warning': 0, 'failed': 0, 'running': 0, 'pending': 1, 'unknown': 0},
+                'scf': {'success': 1, 'warning': 0, 'failed': 0, 'running': 0, 'pending': 1, 'unknown': 0},
+            },
             'scope': ['slide-001'], 'running_tasks': [], 'issues': [],
             'recent_success': [{'name': 'slide-001/1.90', 'group': '2H', 'status': 'success',
                                  'phase': 'scf', 'detail': '计算成功', 'time': record_time}],
+            'phase_cards': [{'name': 'slide-001/1.90', 'group': '2H', 'status': 'success',
+                              'phase': 'scf', 'steps': 12, 'energy': -736.123,
+                              'detail': '自洽收敛', 'time': record_time}],
         }
 
     def test_multiday_log_reconstructs_calendar_dates(self):

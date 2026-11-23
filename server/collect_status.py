@@ -21,7 +21,7 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 SHANGHAI = dt.timezone(dt.timedelta(hours=8))
 EVENT_RE = re.compile(r"^\[(\d{2}:\d{2}:\d{2})\]\s+(RELAX ok|RELAX FAIL|SCF\s+ok|SCF\s+FAIL|SCF SKIP)\s+([^\s/]+)/([^\s]+)(?:\s+\(?rc=(\d+)\)?)?")
 CLOCK_RE = re.compile(r"^\[(\d{2}:\d{2}:\d{2})\]")
@@ -30,6 +30,8 @@ FLAT_EVENT_RE = re.compile(r"^\[(\d{2})-(\d{2})\s+(\d{2}:\d{2})\]\s+(OK|FAIL|SKI
 FATAL_RE = re.compile(r"ERROR:|segmentation|killed|out of memory|BAD TERMINATION|forrtl: error|internal error", re.IGNORECASE)
 SLIDE_RE = re.compile(r"^(?:slide-[0-9]{3,}|s[0-9]{3,})$")
 DIST_DIR_RE = re.compile(r"^d-?([0-9]+(?:\.[0-9]+)?)$")
+IONIC_STEP_RE = re.compile(r"^\s*(\d+)\s+F=\s*([-+0-9.EeDd]+)\s+E0=\s*([-+0-9.EeDd]+)")
+ELECTRONIC_STEP_RE = re.compile(r"^\s*(?:DAV|RMM):\s*(\d+)\s+([-+0-9.EeDd]+)")
 FRESH_SECONDS = 45 * 60
 TAIL_BYTES = 256 * 1024
 RECENT_WINDOW_SECONDS = 24 * 3600
@@ -95,6 +97,46 @@ def outcar_evidence(directory, phase):
     if energy is not None and not math.isfinite(energy):
         energy = None
     return ("converged" if marker in text else "unconverged"), energy
+
+
+def oszicar_metrics(directory, phase):
+    """Return (step_count, last E0) from OSZICAR: ionic for relax, electronic for scf."""
+    import math
+    if not directory:
+        return None, None
+    path = directory / "OSZICAR"
+    if not path.is_file() or path.stat().st_size == 0:
+        return None, None
+    steps, energy = None, None
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return None, None
+    for line in lines:
+        if phase == "relax":
+            match = IONIC_STEP_RE.match(line)
+            if match:
+                try:
+                    steps = int(match.group(1))
+                    energy = float(match.group(3).replace("D", "E"))
+                except ValueError:
+                    continue
+        else:
+            match = ELECTRONIC_STEP_RE.match(line)
+            if match:
+                try:
+                    steps = int(match.group(1))
+                except ValueError:
+                    pass
+            match = IONIC_STEP_RE.match(line)
+            if match:
+                try:
+                    energy = float(match.group(3).replace("D", "E"))
+                except ValueError:
+                    pass
+    if energy is not None and not math.isfinite(energy):
+        energy = None
+    return steps, energy
 
 
 def convergence_state(directory, phase):
@@ -323,7 +365,7 @@ def read_slurm_active():
 def previous_summary(path):
     try:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
-        return data if data.get("schema_version") == 2 else {}
+        return data if data.get("schema_version") in (2, 3) else {}
     except (OSError, ValueError):
         return {}
 
@@ -594,7 +636,56 @@ def evaluate_discovered(tree, row, outs, events, active_directories, allow_time_
     }
 
 
-def finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path):
+def evaluate_phase_card(tree, row, phase, outs, events, active_directories, allow_time_fallback):
+    """One independent card for RELAX or SCF, with step count and energy."""
+    slide, distance = row["slide"], row["distance"]
+    if row["case"]:
+        outs = [item for item in outs if row["case"] in item[0].parts]
+    directory = next((item[0] for item in outs if item[1] == phase), None)
+    active = False
+    for item in active_directories:
+        parts = Path(item).parts
+        if slide in parts and ("d-" + distance) in parts and (not row["case"] or row["case"] in parts):
+            active = phase == ("scf" if "scf" in parts else "relax")
+            break
+        if directory and str(item) == str(directory):
+            active = True
+            break
+    converged, outcar_energy = outcar_evidence(directory, phase)
+    steps, oszicar_energy = oszicar_metrics(directory, phase)
+    energy = oszicar_energy if oszicar_energy is not None else outcar_energy
+    fatal = output_has(directory, FATAL_RE)
+    task_events = find_events(events, slide, distance)
+    event = task_events.get(phase.upper()) or {}
+    fresh = allow_time_fallback and is_fresh(directory)
+    if active:
+        status, detail = "running", ("静态计算进行中" if phase == "scf" else "弛豫计算进行中")
+    elif directory is None or converged == "missing":
+        status, detail = "pending", ("等待结构优化" if phase == "scf" else "尚未开始")
+    elif fatal:
+        status, detail = "failed", "计算异常终止"
+    elif converged == "converged":
+        status, detail = ("success", "自洽收敛") if energy is not None else ("warning", "能量记录缺失或无效")
+        if phase == "relax" and energy is not None:
+            status, detail = "success", "结构优化收敛"
+    elif fresh:
+        status, detail = "running", ("静态计算进行中" if phase == "scf" else "弛豫计算进行中")
+    else:
+        status, detail = "warning", ("静态计算未收敛" if phase == "scf" else "弛豫未收敛")
+    timestamp = event_timestamp(event)
+    output_stamp = output_mtime(directory)
+    if timestamp is None or (output_stamp is not None and output_stamp > timestamp):
+        timestamp = output_stamp
+    return {
+        "name": slide + "/" + distance,
+        "group": tree_group(tree["base"], tree["root"], row["case"]),
+        "phase": phase, "status": status, "steps": steps, "energy": energy,
+        "detail": detail, "time": iso_time(timestamp) if timestamp is not None else "",
+        "sort_key": timestamp or 0,
+    }
+
+
+def finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path, phase_records=None):
     now_ts = dt.datetime.now().timestamp()
     window_start = now_ts - RECENT_WINDOW_SECONDS
 
@@ -628,6 +719,57 @@ def finalize(records, all_slides, log_candidates, active, process_scan, active_d
     successes = [record for record in current_records if record["status"] == "success"][:MAX_SUCCESS]
     running = [{key: value for key, value in record.items() if key not in {"sort_key", "time"}} for record in records if record["status"] == "running"]
 
+    phase_records = phase_records or []
+    phase_history = {}
+    for record in previous.get("phase_history", []):
+        if isinstance(record, dict) and {"name", "group", "phase"} <= set(record):
+            phase_history[(record["group"], record["name"], record["phase"])] = record
+    phase_keys = {(record["group"], record["name"], record["phase"]) for record in phase_records}
+    for record in phase_records:
+        key = (record["group"], record["name"], record["phase"])
+        if record["status"] in {"success", "warning", "failed", "unknown"}:
+            phase_history[key] = record
+        elif key in phase_history:
+            del phase_history[key]
+    phase_history = {key: value for key, value in phase_history.items() if key in phase_keys}
+    phase_completed = sorted(phase_history.values(), key=lambda record: record.get("sort_key", 0), reverse=True)
+    phase_cards = [
+        record for record in phase_completed
+        if record["name"].split("/", 1)[0] in scope and is_recent(record)
+    ][:MAX_ISSUES]
+    phase_counts = {phase: {state: 0 for state in STATE_ORDER} for phase in ("relax", "scf")}
+    if phase_records:
+        for record in phase_records:
+            if record["phase"] in phase_counts and record["status"] in phase_counts[record["phase"]]:
+                phase_counts[record["phase"]][record["status"]] += 1
+    if phase_records and any(record.get("phase") == "scf" for record in records):
+        task_phases = defaultdict(dict)
+        for record in phase_records:
+            task_phases[(record["group"], record["name"])][record["phase"]] = record["status"]
+        task_states = []
+        for phases in task_phases.values():
+            values = set(phases.values())
+            if "running" in values:
+                task_states.append("running")
+            elif "failed" in values:
+                task_states.append("failed")
+            elif "warning" in values:
+                task_states.append("warning")
+            elif phases.get("relax") == "success" and phases.get("scf") == "success":
+                task_states.append("success")
+            elif values == {"pending"}:
+                task_states.append("pending")
+            else:
+                task_states.append("unknown")
+        counts = {state: task_states.count(state) for state in STATE_ORDER}
+    elif not phase_records:
+        # Explicit-tree mode has no phase breakdown; keep each phase total equal to tasks.
+        for record in records:
+            phase = record.get("phase") if record.get("phase") in phase_counts else "relax"
+            other = "scf" if phase == "relax" else "relax"
+            phase_counts[phase][record["status"]] += 1
+            phase_counts[other]["pending"] += 1
+
     def public(record):
         return {key: value for key, value in record.items() if key != "sort_key"}
 
@@ -639,11 +781,14 @@ def finalize(records, all_slides, log_candidates, active, process_scan, active_d
         "job_active": bool(active),
         "total": len(records),
         "counts": counts,
+        "phase_counts": phase_counts,
         "scope": scope,
         "running_tasks": running,
         "issues": [public(record) for record in issues],
         "recent_success": [public(record) for record in successes],
+        "phase_cards": [public(record) for record in phase_cards],
         "history": completed,
+        "phase_history": phase_completed,
     }
 
 
@@ -770,18 +915,20 @@ def collect_current_batch(config, active, process_scan, active_directories, hist
         rows = tree["rows"]
     outputs = index_outputs([root], {root})
     events = read_events(root)
-    records, all_slides, log_candidates = [], {row["slide"] for row in rows}, []
+    records, phase_records, all_slides, log_candidates = [], [], {row["slide"] for row in rows}, []
     candidate = last_event_slide(root)
     if candidate and candidate[1] in all_slides:
         log_candidates.append(candidate)
     for row in rows:
         outs = outputs.get((root, row["slide"], row["distance"]), [])
         records.append(evaluate_discovered(tree, row, outs, events, active_directories, not process_scan))
-    return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
+        for phase in ("relax", "scf"):
+            phase_records.append(evaluate_phase_card(tree, row, phase, outs, events, active_directories, not process_scan))
+    return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path, phase_records)
 
 
 def public_data(data):
-    return {key: value for key, value in data.items() if key != "history"}
+    return {key: value for key, value in data.items() if key not in {"history", "phase_history"}}
 
 
 def atomic_json_write(path, data):
