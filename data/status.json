@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-23T08:00:32+08:00",
+  "updated_at": "2026-11-23T10:00:33+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 3388,
   "counts": {
     "success": 346,
-    "warning": 643,
-    "failed": 170,
+    "warning": 645,
+    "failed": 168,
     "running": 1,
     "pending": 2226,
     "unknown": 2
@@ -18,11 +18,11 @@
   ],
   "running_tasks": [
     {
-      "name": "s002/2.80",
+      "name": "s002/2.40",
       "group": "2H-3ea9f1",
       "status": "running",
-      "phase": "scf",
-      "detail": "静态计算进行中"
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
     }
   ],
   "issues": [],
