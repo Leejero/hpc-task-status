@@ -10,7 +10,6 @@ tasks remain counts. Subtask names keep their real slide/distance identifiers.
 import argparse
 import csv
 import datetime as dt
-import hashlib
 import json
 import os
 import re
@@ -517,13 +516,42 @@ def index_outputs(bases, tree_roots):
 
 
 def tree_group(base, root, case):
-    try:
-        relative = root.relative_to(base)
-    except ValueError:
-        relative = Path(root.name)
-    digest = hashlib.sha1(str(relative).encode("utf-8")).hexdigest()[:6]
-    prefix = (case or root.name)[:10].strip("-_")
-    return (prefix + "-" + digest)[:20]
+    """Readable batch label, e.g. '2H · fb_pass_submit' (no full path)."""
+    if case:
+        return (case + " · " + root.name)[:32]
+    return root.name[:32]
+
+
+def select_current_batch(trees, active_directories, config=None):
+    """Pick the single task tree that owns the live VASP work directory.
+
+    No folder is hard-coded: the running process cwd is walked upwards to the
+    nearest pairs.tsv tree. If no process is visible (job gap), the private
+    config hint, then the newest run log, then the newest pairs.tsv decide.
+    """
+    roots = {tree["root"]: tree for tree in trees}
+    for item in sorted(active_directories):
+        path = Path(item)
+        for parent in (path, *path.parents):
+            if parent in roots:
+                return roots[parent]
+    hint = (config or {}).get("batch_root")
+    if hint:
+        hint_path = Path(hint).resolve()
+        for root, tree in roots.items():
+            if root == hint_path or hint_path in root.parents or root in hint_path.parents:
+                return tree
+    log_candidates = [
+        (log.stat().st_mtime, tree["root"])
+        for tree in trees for log in run_logs(tree["root"])
+    ]
+    if log_candidates:
+        return roots[max(log_candidates, key=lambda item: item[0])[1]]
+    pair_candidates = [
+        ((tree["root"] / "pairs.tsv").stat().st_mtime, tree["root"])
+        for tree in trees if (tree["root"] / "pairs.tsv").is_file()
+    ]
+    return roots[max(pair_candidates, key=lambda item: item[0])[1]] if pair_candidates else trees[0]
 
 
 def evaluate_discovered(tree, row, outs, events, active_directories, allow_time_fallback):
@@ -628,7 +656,7 @@ def collect(config_path, active=None, history_path=None, active_directories=None
     if process_scan:
         active_directories = process_directories()
     if config.get("discover"):
-        return collect_discovered(config, active, process_scan, active_directories, history_path)
+        return collect_current_batch(config, active, process_scan, active_directories, history_path)
     if not isinstance(config.get("jobs"), list) or not config["jobs"]:
         raise ValueError("tasks.json requires discover=true or a non-empty jobs list")
     records, all_slides, log_candidates = [], set(), []
@@ -648,24 +676,24 @@ def collect(config_path, active=None, history_path=None, active_directories=None
     return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
 
 
-def collect_discovered(config, active, process_scan, active_directories, history_path):
+def collect_current_batch(config, active, process_scan, active_directories, history_path):
+    """Monitor only the task tree of the currently running batch."""
     bases = resolve_search_roots(config)
     trees = discover_trees(bases)
     if not trees:
         raise ValueError("no pairs.tsv task trees discovered")
-    tree_roots = {tree["root"] for tree in trees}
-    outputs = index_outputs(bases, tree_roots)
-    events = {root: read_events(root) for root in tree_roots}
+    tree = select_current_batch(trees, active_directories, config)
+    root = tree["root"]
+    outputs = index_outputs([root], {root})
+    events = read_events(root)
     records, all_slides, log_candidates = [], set(), []
-    for tree in trees:
-        root = tree["root"]
-        all_slides.update(row["slide"] for row in tree["rows"])
-        candidate = last_event_slide(root)
-        if candidate:
-            log_candidates.append(candidate)
-        for row in tree["rows"]:
-            outs = outputs.get((root, row["slide"], row["distance"]), [])
-            records.append(evaluate_discovered(tree, row, outs, events[root], active_directories, not process_scan))
+    all_slides.update(row["slide"] for row in tree["rows"])
+    candidate = last_event_slide(root)
+    if candidate:
+        log_candidates.append(candidate)
+    for row in tree["rows"]:
+        outs = outputs.get((root, row["slide"], row["distance"]), [])
+        records.append(evaluate_discovered(tree, row, outs, events, active_directories, not process_scan))
     return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
 
 
