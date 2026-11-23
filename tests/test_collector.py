@@ -305,23 +305,40 @@ class DiscoveryTest(unittest.TestCase):
         (directory / 'energy.txt').write_text('-123.456\n', encoding='ascii')
         return directory
 
-    def test_discovers_arbitrary_folder_names_and_both_layouts(self):
+    def test_only_current_batch_is_counted_with_readable_label(self):
         phased = self.make_phased('unexpected/deep/place', [('slide-000', 'd-2.10', 'f1_1', 'norm')])
         self.assert_success(phased / 'relax' / 'slide-000' / 'd-2.10' / 'f1_1' / 'norm', 'relax')
         self.assert_success(phased / 'scf' / 'slide-000' / 'd-2.10' / 'f1_1' / 'norm', 'scf')
         flat = self.make_flat('another/tree', [('2H', 's000', '3.80')])
         self.assert_success(flat / '2H' / 's000' / 'd-3.80', 'relax')
-        data = self.collect()
-        self.assertEqual(data['total'], 2)
-        self.assertEqual(data['counts']['success'], 2)
-        self.assertEqual(sorted(record['name'] for record in data['history']), ['s000/3.80', 'slide-000/2.10'])
-        self.assertEqual(len({record['group'] for record in data['history']}), 2)
-        self.assertTrue(all(len(record['group']) <= 20 for record in data['history']))
+        # The live VASP process belongs to the flat tree; the other tree is an archive.
+        data = self.collect({str(flat / '2H')})
+        self.assertEqual(data['total'], 1)
+        self.assertEqual(data['counts']['success'], 1)
+        self.assertEqual([record['name'] for record in data['history']], ['s000/3.80'])
+        self.assertEqual(data['history'][0]['group'], '2H · tree')
+        self.assertEqual(data['scope'], ['s000'])
         public = collector.public_data(data)
-        self.assertEqual(public['scope'], ['s000', 'slide-000'])
-        self.assertEqual(len(public['recent_success']), 2)
         publisher.validate(public)
         self.assertNotIn(str(self.root), json.dumps(public))
+
+    def test_idle_gap_falls_back_to_newest_log_tree_not_archive(self):
+        old = self.make_phased('fb24_old/2H', [('slide-000', 'd-2.10', 'f1_1', 'norm')])
+        old_log = old / 'run.log'
+        old_log.write_text('[15:26:44] SCF ok slide-000/d-2.10\n', encoding='utf-8')
+        old_stamp = dt.datetime(2026, 11, 5, 15, 26, 44, tzinfo=collector.SHANGHAI).timestamp()
+        os.utime(old_log, (old_stamp, old_stamp))
+        current = self.make_flat('fb_pass_submit', [('2H', 's000', '3.80')])
+        self.assert_success(current / '2H' / 's000' / 'd-3.80', 'relax')
+        now = dt.datetime.now(collector.SHANGHAI)
+        current_log = current / 'run_2H.log'
+        current_log.write_text('[{}] OK s000 d-3.80\n'.format(now.strftime('%m-%d %H:%M')), encoding='utf-8')
+        os.utime(current_log, (now.timestamp(), now.timestamp()))
+        data = self.collect(set())
+        self.assertEqual(data['total'], 1)
+        self.assertEqual(data['history'][0]['name'], 's000/3.80')
+        self.assertEqual(data['history'][0]['group'], '2H · fb_pass_submit')
+        publisher.validate(collector.public_data(data))
 
     def test_flat_log_failures_and_running_process(self):
         flat = self.make_flat('pass/submit', [('2H', 's000', '3.80'), ('2H', 's002', '2.00')])
