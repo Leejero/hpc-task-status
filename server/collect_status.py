@@ -517,10 +517,8 @@ def index_outputs(bases, tree_roots):
 
 
 def tree_group(base, root, case):
-    """Readable batch label, e.g. '2H · fb_pass_submit' (no full path)."""
-    if case:
-        return (case + " · " + root.name)[:32]
-    return root.name[:32]
+    """Use the task tree folder name as the batch label (ASCII, no separators)."""
+    return root.name[:20]
 
 
 def select_current_batch(trees, active_directories, config=None):
