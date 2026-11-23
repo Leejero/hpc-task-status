@@ -1,25 +1,25 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-11-23T14:00:32+08:00",
+  "updated_at": "2026-11-23T14:40:43+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
-  "total": 3388,
+  "total": 180,
   "counts": {
-    "success": 346,
-    "warning": 648,
-    "failed": 165,
+    "success": 0,
+    "warning": 11,
+    "failed": 168,
     "running": 1,
-    "pending": 2226,
-    "unknown": 2
+    "pending": 0,
+    "unknown": 0
   },
   "scope": [
-    "s002"
+    "s000"
   ],
   "running_tasks": [
     {
-      "name": "s002/1.90",
-      "group": "2H-3ea9f1",
+      "name": "s000/3.60",
+      "group": "2H · fb_pass_submit",
       "status": "running",
       "phase": "relax",
       "detail": "弛豫计算进行中"
