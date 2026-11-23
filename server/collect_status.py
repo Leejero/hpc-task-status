@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Discover every VASP subtask and publish a recent-activity completion summary.
+"""Monitor the prepared subtasks of the currently running VASP job.
 
-Task trees are discovered dynamically from pairs.tsv files under the user's own
-scratch/home space; no fixed project folder is privileged and any directory
-layout is supported by indexing real OUTCAR locations. Only current running
-tasks and completions inside the recent activity window are published; pending
-tasks remain counts. Subtask names keep their real slide/distance identifiers.
+Task trees are discovered dynamically from pairs.tsv files, but only the tree
+owning the live VASP process is counted. Within that tree, only the slide
+directory of the running job is considered, and only distance directories whose
+VASP input set (INCAR/KPOINTS/POSCAR/POTCAR) has been prepared are included.
+Other slides, archived trees and unfinished input directories stay out of the
+totals. Subtask names keep their real slide/distance identifiers.
 """
 import argparse
 import csv
@@ -676,22 +677,105 @@ def collect(config_path, active=None, history_path=None, active_directories=None
     return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
 
 
+def slide_directory(root, case, slide):
+    """Directory holding the distance subfolders for one slide."""
+    return root / case / slide if case else root / slide
+
+
+def active_slide_targets(tree, active_directories):
+    """(case, slide) pairs that own a live VASP working directory."""
+    root = tree["root"]
+    cases = {row["case"] for row in tree["rows"]}
+    targets = []
+    for item in sorted(active_directories):
+        path = Path(item)
+        for parent in (path, *path.parents):
+            case_dir = parent.parent
+            if case_dir.parent == root and case_dir.name in cases and SLIDE_RE.fullmatch(parent.name):
+                targets.append((case_dir.name, parent.name))
+                break
+            if parent.parent == root and SLIDE_RE.fullmatch(parent.name) and "" in cases:
+                targets.append(("", parent.name))
+                break
+    seen = set()
+    return [target for target in targets if not (target in seen or seen.add(target))]
+
+
+def prepared_distance_dirs(root, case, slide):
+    """Distance folders whose VASP input set is ready for the current job."""
+    directory = slide_directory(root, case, slide)
+    prepared = {}
+    if not directory.is_dir():
+        return prepared
+    for child in directory.iterdir():
+        if not child.is_dir() or not DIST_DIR_RE.fullmatch(child.name):
+            continue
+        if all((child / name).exists() for name in ("INCAR", "KPOINTS", "POSCAR", "POTCAR")):
+            prepared[normalize_distance(child.name)] = child
+    return prepared
+
+
+def newest_case_for_slide(root, tree, slide):
+    """Pick the case whose prepared inputs for a slide were touched most recently."""
+    candidates = []
+    for case in {row["case"] for row in tree["rows"] if row["slide"] == slide}:
+        distances = prepared_distance_dirs(root, case, slide)
+        if not distances:
+            continue
+        mtime = max(path.stat().st_mtime for path in distances.values())
+        candidates.append((mtime, case))
+    return max(candidates)[1] if candidates else None
+
+
 def collect_current_batch(config, active, process_scan, active_directories, history_path):
-    """Monitor only the task tree of the currently running batch."""
+    """Monitor only prepared subtasks in the slide of the currently running batch."""
     bases = resolve_search_roots(config)
     trees = discover_trees(bases)
     if not trees:
         raise ValueError("no pairs.tsv task trees discovered")
     tree = select_current_batch(trees, active_directories, config)
     root = tree["root"]
+    targets = active_slide_targets(tree, active_directories)
+    if not targets:
+        candidate = last_event_slide(root)
+        if candidate:
+            slide = candidate[1]
+            case = newest_case_for_slide(root, tree, slide)
+            if case is not None:
+                targets = [(case, slide)]
+    rows, seen = [], set()
+    for case, slide in targets:
+        prepared = prepared_distance_dirs(root, case, slide)
+        directory = slide_directory(root, case, slide)
+        for item in active_directories:
+            path = Path(item)
+            if path.parent == directory and DIST_DIR_RE.fullmatch(path.name):
+                prepared.setdefault(normalize_distance(path.name), path)
+        if not prepared:
+            prepared = {
+                normalize_distance(row["distance"]): None
+                for row in tree["rows"] if row["case"] == case and row["slide"] == slide
+            }
+        for row in tree["rows"]:
+            if row["case"] != case or row["slide"] != slide:
+                continue
+            distance = normalize_distance(row["distance"])
+            if distance not in prepared:
+                continue
+            key = (case, slide, distance)
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append(row)
+    if not rows:
+        rows = tree["rows"]
     outputs = index_outputs([root], {root})
     events = read_events(root)
-    records, all_slides, log_candidates = [], set(), []
-    all_slides.update(row["slide"] for row in tree["rows"])
+    records, all_slides, log_candidates = [], {row["slide"] for row in rows}, []
     candidate = last_event_slide(root)
-    if candidate:
+    if candidate and candidate[1] in all_slides:
         log_candidates.append(candidate)
-    for row in tree["rows"]:
+    for row in rows:
         outs = outputs.get((root, row["slide"], row["distance"]), [])
         records.append(evaluate_discovered(tree, row, outs, events, active_directories, not process_scan))
     return finalize(records, all_slides, log_candidates, active, process_scan, active_directories, history_path)
