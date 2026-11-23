@@ -6,7 +6,9 @@
 
 ## 数据文件
 
-App 只读取 `data/status.json`，使用 schema 2 紧凑格式。顶部统计全部子任务，明细区块只包含**当前计算 slide**：实际运行的 RELAX/SCF 任务、最多 30 条该 slide 的失败/警告/未知记录，以及 5 条该 slide 的最近成功记录。跨 slide 的历史完成记录保留在采集端本地，不进入公开列表；等待中的子任务仅计数。
+App 只读取 `data/status.json`，使用 schema 2 紧凑格式。**统计范围仅为当前正在运行的那一批任务**：采集器从本用户 VASP 进程的实际工作目录向上定位所属的 `pairs.tsv` 任务树，只统计这一棵树里的子任务，历史归档、旧版本和备份目录一律不计入 `total`。进程短暂不可见时（作业间隙），依次用 `tasks.json` 的私有 `batch_root` 提示、最近更新的运行日志、最近更新的 `pairs.tsv` 回退，不写死任何文件夹。
+
+明细区块只包含**当前计算 slide**：实际运行的 RELAX/SCF 任务、最多 30 条该 slide 的失败/警告/未知记录，以及 5 条该 slide 的最近成功记录。跨 slide 的历史完成记录保留在采集端本地，不进入公开列表；等待中的子任务仅计数。公开记录中的 `group` 是可读批次名（如 `2H · fb_pass_submit`），只含 case 与任务树目录名，不含完整路径。
 
 **完成记录的时效**：`issues` 与 `recent_success` 只收录相对本次采集时间 24 小时内完成、且能判定完成时间的记录；无法判定时间或早于该窗口的记录只计入 `counts`，不进入公开明细。`push_status.py` 会逐条复核每条完成记录的 `time` 必须落在 `[updated_at - 24h, updated_at + 5min]`，并拒绝过期快照，防止旧记录被推送。
 
@@ -86,9 +88,9 @@ App 端同时拉取 GitHub Raw 与 jsDelivr，并按 `updated_at` 选取**最新
 
 采集端按北京时间每天 08:00、10:00、12:00、14:00、16:00、18:00、20:00 更新，共 7 次。
 
-采集端位于服务器用户主目录顶层的 `server/`。`tasks.json` 只声明 `discover: true` 与 `search_roots: ["auto"]`（默认取用户的 `/scratch/<user>` 与家目录），**不列出任何任务文件夹**：每次采集自动发现该范围内全部 `pairs.tsv` 任务树，并按真实的 `OUTCAR` 位置匹配子任务，因此任意目录层级与命名（如 `relax/slide-000/d-2.10/f1_1/norm`、`retry/work/slide-000/d-1.70`、单阶段的 `2H/s000/d-3.80`）都能被识别。任务数量与目录完全动态变化，不写死清单。
+采集端位于服务器用户主目录顶层的 `server/`。`tasks.json` 只声明 `discover: true` 与 `search_roots: ["auto"]`（默认取用户的 `/scratch/<user>` 与家目录），**不列出任何任务文件夹**：每次采集先在该范围内发现全部 `pairs.tsv` 任务树，再按当前 VASP 进程的工作目录选出正在跑的那一棵，并按真实的 `OUTCAR` 位置匹配子任务。因此任意目录层级与命名（如 `relax/slide-000/d-2.10/f1_1/norm`、`retry/work/slide-000/d-1.70`、单阶段的 `2H/s000/d-3.80`）都能被识别，任务数量与目录动态变化，不写死清单。可选的私有字段 `batch_root` 用于进程不可见时人工指定当前批次。
 
-兼容两类任务清单：表头 `# slide distance direction stacking` 的两阶段（RELAX+SCF）布局，以及 `# case slide d_HCu` 的单阶段布局（对应 `[MM-DD HH:MM] OK/FAIL/SKIP <slide> d-<distance> rc=<n>` 日志）。公开记录中的 `group` 是任务树相对路径的短哈希加 case 前缀，不泄露服务器路径；完整历史仍只留在采集端。
+兼容两类任务清单：表头 `# slide distance direction stacking` 的两阶段（RELAX+SCF）布局，以及 `# case slide d_HCu` 的单阶段布局（对应 `[MM-DD HH:MM] OK/FAIL/SKIP <slide> d-<distance> rc=<n>` 日志）。完整历史只留在采集端，不推送到本仓库。
 
 - `collect_status.py`：检查 VASP 收敛与能量记录，当前目录优先，历史目录仅补齐当前未开始的结果；
 - `push_status.py`：校验紧凑格式及公开字段，推送后回读验证；
