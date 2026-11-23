@@ -316,7 +316,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(data['total'], 1)
         self.assertEqual(data['counts']['success'], 1)
         self.assertEqual([record['name'] for record in data['history']], ['s000/3.80'])
-        self.assertEqual(data['history'][0]['group'], '2H · tree')
+        self.assertEqual(data['history'][0]['group'], 'tree')
         self.assertEqual(data['scope'], ['s000'])
         public = collector.public_data(data)
         publisher.validate(public)
@@ -337,7 +337,7 @@ class DiscoveryTest(unittest.TestCase):
         data = self.collect(set())
         self.assertEqual(data['total'], 1)
         self.assertEqual(data['history'][0]['name'], 's000/3.80')
-        self.assertEqual(data['history'][0]['group'], '2H · fb_pass_submit')
+        self.assertEqual(data['history'][0]['group'], 'fb_pass_submit')
         publisher.validate(collector.public_data(data))
 
     def test_flat_log_failures_and_running_process(self):
@@ -355,7 +355,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(data['counts']['failed'], 0)
         self.assertEqual(data['counts']['running'], 1)
         self.assertEqual(public['running_tasks'][0]['name'], 's000/3.80')
-        self.assertEqual(public['running_tasks'][0]['group'][:2], '2H')
+        self.assertEqual(public['running_tasks'][0]['group'], 'submit')
         # s002 is outside the active slide and is not prepared to run here.
         self.assertEqual(public['issues'], [])
         publisher.validate(public)
@@ -367,7 +367,7 @@ class DiscoveryTest(unittest.TestCase):
         (running / 'OUTCAR').write_text('still running', encoding='utf-8')
         data = self.collect({str(running)})
         self.assertEqual(len(data['running_tasks']), 1)
-        self.assertTrue(data['running_tasks'][0]['group'].startswith('2H'))
+        self.assertEqual(data['running_tasks'][0]['group'], 'submit')
         publisher.validate(collector.public_data(data))
 
     def test_flat_event_dates_are_parsed_from_mm_dd_log(self):
