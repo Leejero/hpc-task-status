@@ -352,11 +352,11 @@ class DiscoveryTest(unittest.TestCase):
         data = self.collect({str(running)})
         public = collector.public_data(data)
         self.assertEqual(public['scope'], ['s000'])
-        self.assertEqual(data['counts']['failed'], 1)
+        self.assertEqual(data['counts']['failed'], 0)
         self.assertEqual(data['counts']['running'], 1)
         self.assertEqual(public['running_tasks'][0]['name'], 's000/3.80')
         self.assertEqual(public['running_tasks'][0]['group'][:2], '2H')
-        # s002 is a real failure but outside the active slide, so it stays in counts only.
+        # s002 is outside the active slide and is not prepared to run here.
         self.assertEqual(public['issues'], [])
         publisher.validate(public)
 
@@ -383,6 +383,27 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(event['code'], '7')
         self.assertEqual(event['date'], now.date().isoformat())
         self.assertEqual(collector.last_event_slide(flat)[1], 's000')
+
+    def test_only_prepared_distances_in_active_slide_are_counted(self):
+        flat = self.make_flat('pass/submit', [('2H', 's000', '3.80'), ('2H', 's000', '3.20')])
+        ready = flat / '2H' / 's000' / 'd-3.80'
+        ready.mkdir(parents=True, exist_ok=True)
+        for name in ('INCAR', 'KPOINTS', 'POSCAR', 'POTCAR'):
+            (ready / name).write_text('ready\n', encoding='utf-8')
+        self.assert_success(ready, 'relax')
+        stale = flat / '2H' / 's000' / 'd-3.20'
+        stale.mkdir(parents=True, exist_ok=True)
+        (stale / 'POSCAR').write_text('stale\n', encoding='utf-8')
+        now = dt.datetime.now(collector.SHANGHAI)
+        log = flat / 'run_2H.log'
+        log.write_text('[{}] OK s000 d-3.80\n'.format(now.strftime('%m-%d %H:%M')), encoding='utf-8')
+        os.utime(log, (now.timestamp(), now.timestamp()))
+        data = self.collect(set())
+        self.assertEqual(data['total'], 1)
+        self.assertEqual(data['counts']['success'], 1)
+        self.assertEqual(data['history'][0]['name'], 's000/3.80')
+        self.assertEqual(data['scope'], ['s000'])
+        publisher.validate(collector.public_data(data))
 
 
 if __name__ == '__main__':
