@@ -1,33 +1,33 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-26T18:00:03+08:00",
+  "updated_at": "2026-11-26T20:00:03+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 15,
   "counts": {
-    "success": 9,
+    "success": 10,
     "warning": 0,
     "failed": 0,
     "running": 1,
-    "pending": 5,
+    "pending": 4,
     "unknown": 0
   },
   "phase_counts": {
     "relax": {
-      "success": 9,
-      "warning": 0,
-      "failed": 0,
-      "running": 1,
-      "pending": 5,
-      "unknown": 0
-    },
-    "scf": {
-      "success": 9,
+      "success": 11,
       "warning": 0,
       "failed": 0,
       "running": 0,
-      "pending": 6,
+      "pending": 4,
+      "unknown": 0
+    },
+    "scf": {
+      "success": 10,
+      "warning": 0,
+      "failed": 0,
+      "running": 1,
+      "pending": 4,
       "unknown": 0
     }
   },
@@ -36,16 +36,46 @@
   ],
   "running_tasks": [
     {
-      "name": "s010/2.00",
+      "name": "s010/1.90",
       "group": "fb_pass_submit",
       "status": "running",
-      "phase": "relax",
-      "detail": "弛豫计算进行中"
+      "phase": "scf",
+      "detail": "静态计算进行中"
     }
   ],
   "issues": [],
   "recent_success": [],
   "phase_cards": [
+    {
+      "name": "s010/1.90",
+      "group": "fb_pass_submit",
+      "phase": "relax",
+      "status": "success",
+      "steps": 31,
+      "energy": -753.40088,
+      "detail": "结构优化收敛",
+      "time": "2026-11-26T19:45:38+08:00"
+    },
+    {
+      "name": "s010/2.00",
+      "group": "fb_pass_submit",
+      "phase": "scf",
+      "status": "success",
+      "steps": 59,
+      "energy": -754.52511,
+      "detail": "自洽收敛",
+      "time": "2026-11-26T18:47:00+08:00"
+    },
+    {
+      "name": "s010/2.00",
+      "group": "fb_pass_submit",
+      "phase": "relax",
+      "status": "success",
+      "steps": 50,
+      "energy": -753.47453,
+      "detail": "结构优化收敛",
+      "time": "2026-11-26T18:19:26+08:00"
+    },
     {
       "name": "s010/2.20",
       "group": "fb_pass_submit",
