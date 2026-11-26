@@ -1,33 +1,33 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-26T16:00:02+08:00",
+  "updated_at": "2026-11-26T18:00:03+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 15,
   "counts": {
-    "success": 8,
+    "success": 9,
     "warning": 0,
     "failed": 0,
     "running": 1,
-    "pending": 6,
+    "pending": 5,
     "unknown": 0
   },
   "phase_counts": {
     "relax": {
-      "success": 8,
+      "success": 9,
       "warning": 0,
       "failed": 0,
       "running": 1,
-      "pending": 6,
+      "pending": 5,
       "unknown": 0
     },
     "scf": {
-      "success": 8,
+      "success": 9,
       "warning": 0,
       "failed": 0,
       "running": 0,
-      "pending": 7,
+      "pending": 6,
       "unknown": 0
     }
   },
@@ -36,7 +36,7 @@
   ],
   "running_tasks": [
     {
-      "name": "s010/2.20",
+      "name": "s010/2.00",
       "group": "fb_pass_submit",
       "status": "running",
       "phase": "relax",
@@ -46,6 +46,26 @@
   "issues": [],
   "recent_success": [],
   "phase_cards": [
+    {
+      "name": "s010/2.20",
+      "group": "fb_pass_submit",
+      "phase": "scf",
+      "status": "success",
+      "steps": 59,
+      "energy": -754.6294,
+      "detail": "自洽收敛",
+      "time": "2026-11-26T16:51:06+08:00"
+    },
+    {
+      "name": "s010/2.20",
+      "group": "fb_pass_submit",
+      "phase": "relax",
+      "status": "success",
+      "steps": 25,
+      "energy": -753.57721,
+      "detail": "结构优化收敛",
+      "time": "2026-11-26T16:22:48+08:00"
+    },
     {
       "name": "s010/2.40",
       "group": "fb_pass_submit",
