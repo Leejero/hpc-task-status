@@ -1,140 +1,70 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-28T08:00:03+08:00",
+  "updated_at": "2026-11-28T10:00:03+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 15,
   "counts": {
-    "success": 14,
+    "success": 11,
     "warning": 0,
     "failed": 0,
     "running": 1,
-    "pending": 0,
+    "pending": 3,
     "unknown": 0
   },
   "phase_counts": {
     "relax": {
-      "success": 15,
-      "warning": 0,
-      "failed": 0,
-      "running": 0,
-      "pending": 0,
-      "unknown": 0
-    },
-    "scf": {
-      "success": 14,
+      "success": 11,
       "warning": 0,
       "failed": 0,
       "running": 1,
-      "pending": 0,
+      "pending": 3,
+      "unknown": 0
+    },
+    "scf": {
+      "success": 11,
+      "warning": 0,
+      "failed": 0,
+      "running": 0,
+      "pending": 4,
       "unknown": 0
     }
   },
   "scope": [
-    "s002"
+    "s008"
   ],
   "running_tasks": [
     {
-      "name": "s002/1.50",
+      "name": "s008/1.80",
       "group": "fb_pass_submit",
       "status": "running",
-      "phase": "scf",
-      "detail": "静态计算进行中"
+      "phase": "relax",
+      "detail": "弛豫计算进行中"
     }
   ],
   "issues": [],
   "recent_success": [],
   "phase_cards": [
     {
-      "name": "s002/1.50",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 22,
-      "energy": -752.93839,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T07:56:11+08:00"
-    },
-    {
-      "name": "s002/1.60",
+      "name": "s008/1.90",
       "group": "fb_pass_submit",
       "phase": "scf",
       "status": "success",
-      "steps": 56,
-      "energy": -754.11467,
+      "steps": 51,
+      "energy": -754.41223,
       "detail": "自洽收敛",
-      "time": "2026-11-28T07:13:17+08:00"
+      "time": "2026-11-28T09:34:05+08:00"
     },
     {
-      "name": "s002/1.60",
+      "name": "s008/1.90",
       "group": "fb_pass_submit",
       "phase": "relax",
       "status": "success",
-      "steps": 23,
-      "energy": -753.07771,
+      "steps": 27,
+      "energy": -753.35651,
       "detail": "结构优化收敛",
-      "time": "2026-11-28T06:48:22+08:00"
-    },
-    {
-      "name": "s002/1.70",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 56,
-      "energy": -754.24375,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T06:08:21+08:00"
-    },
-    {
-      "name": "s002/1.70",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 24,
-      "energy": -753.20186,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T05:43:21+08:00"
-    },
-    {
-      "name": "s002/1.80",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 58,
-      "energy": -754.35513,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T05:00:03+08:00"
-    },
-    {
-      "name": "s002/1.80",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 20,
-      "energy": -753.31441,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T04:34:06+08:00"
-    },
-    {
-      "name": "s002/1.90",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 56,
-      "energy": -754.44323,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T03:55:19+08:00"
-    },
-    {
-      "name": "s002/1.90",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 32,
-      "energy": -753.39342,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T03:29:53+08:00"
+      "time": "2026-11-28T09:08:23+08:00"
     }
   ]
 }
