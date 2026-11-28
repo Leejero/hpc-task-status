@@ -1,130 +1,41 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-28T14:00:03+08:00",
+  "updated_at": "2026-11-28T16:00:03+08:00",
   "timezone": "Asia/Shanghai",
   "collector_status": "ok",
   "job_active": true,
   "total": 15,
   "counts": {
-    "success": 14,
+    "success": 15,
     "warning": 0,
     "failed": 0,
-    "running": 1,
+    "running": 0,
     "pending": 0,
     "unknown": 0
   },
   "phase_counts": {
     "relax": {
-      "success": 14,
+      "success": 15,
       "warning": 0,
       "failed": 0,
-      "running": 1,
+      "running": 0,
       "pending": 0,
       "unknown": 0
     },
     "scf": {
-      "success": 14,
+      "success": 15,
       "warning": 0,
       "failed": 0,
       "running": 0,
-      "pending": 1,
+      "pending": 0,
       "unknown": 0
     }
   },
   "scope": [
-    "s008"
+    "s010"
   ],
-  "running_tasks": [
-    {
-      "name": "s008/1.50",
-      "group": "fb_pass_submit",
-      "status": "running",
-      "phase": "relax",
-      "detail": "弛豫计算进行中"
-    }
-  ],
+  "running_tasks": [],
   "issues": [],
   "recent_success": [],
-  "phase_cards": [
-    {
-      "name": "s008/1.60",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 59,
-      "energy": -754.09328,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T13:00:50+08:00"
-    },
-    {
-      "name": "s008/1.60",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 26,
-      "energy": -753.0487,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T12:32:52+08:00"
-    },
-    {
-      "name": "s008/1.70",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 58,
-      "energy": -754.22351,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T11:44:41+08:00"
-    },
-    {
-      "name": "s008/1.70",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 14,
-      "energy": -753.17565,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T11:16:20+08:00"
-    },
-    {
-      "name": "s008/1.80",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 57,
-      "energy": -754.33589,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T10:51:49+08:00"
-    },
-    {
-      "name": "s008/1.80",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 30,
-      "energy": -753.29029,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T10:26:23+08:00"
-    },
-    {
-      "name": "s008/1.90",
-      "group": "fb_pass_submit",
-      "phase": "scf",
-      "status": "success",
-      "steps": 51,
-      "energy": -754.41223,
-      "detail": "自洽收敛",
-      "time": "2026-11-28T09:34:05+08:00"
-    },
-    {
-      "name": "s008/1.90",
-      "group": "fb_pass_submit",
-      "phase": "relax",
-      "status": "success",
-      "steps": 27,
-      "energy": -753.35651,
-      "detail": "结构优化收敛",
-      "time": "2026-11-28T09:08:23+08:00"
-    }
-  ]
+  "phase_cards": []
 }
